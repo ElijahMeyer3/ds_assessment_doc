@@ -1,0 +1,31 @@
+---
+title: "ds assessment summary document"
+format: html
+editor: visual
+---
+
+## How to make this doc
+
+Write report to take data from class 
+
+write code to create the following 
+
+in-line code to summarize high level data (time taken / completed vs not / etc) 
+
+## MC Questions 
+
+Section 1 - MC
+questions down the rows 
+answers down the columns 
+% who chose what 
+% who got correct
+
+## Short answer questions
+
+Section 2 - SA 
+
+Look at creating hisogram of number of words, etc. Some sort of meta data 
+(tidytext package) 
+
+
+
