@@ -1,0 +1,315 @@
+StartDate,EndDate,Status,Progress,Duration (in seconds),Finished,RecordedDate,RecipientLastName,RecipientFirstName,RecipientEmail,ExternalReference,LocationLatitude,LocationLongitude,DistributionChannel,UserLanguage,Q43,Storm Paths,Storm Paths Explana ,Movie Budgets 1_1,Movie Budgets 1_2,Movie Budgets 1_3,Movie Budgets 1_4,Movie Budgets 2,Application Screenin,Banana Conclusions ,COVID Map - 1/2,COVID Map - 2/2,Attention Check 1/2,Disease Screening _1,Disease Screening _2,Disease Screening _3,Disease Screening _4,He Said She Said 1/3,He Said She Said 1/3_3_TEXT,He Said She Said 2/3,He Said She Said 2/3_3_TEXT,He Said She Said 3/3,He Said She Said 3/3_3_TEXT,Build-a-Plot,Realty Tree 1/2,Attention Check 2/2,Realty Tree 2/2,Website Testing 1/3,Website Testing 2/3,Website Testing 3/3,Image Recognition1/1,DataConfidentiali1/1,Activity Journal 1/1,Movie Wrangling 1/6,Movie Wrangling 2/6,Movie Wrangling 3/6,Movie Wrangling 4/6,Movie Wrangling 5/6,Movie Wrangling 6/6,Time_Spent,Consent
+Start Date,End Date,Response Type,Progress,Duration (in seconds),Finished,Recorded Date,Recipient Last Name,Recipient First Name,Recipient Email,External Data Reference,Location Latitude,Location Longitude,Distribution Channel,User Language,"What is your netID? (Typically 2-3 letters and 2-4 numbers, e.g. abc123)","The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. 
+
+
+
+  
+
+
+
+Which city is more likely to be hit by the storm?",Explain.,"A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots.
+
+
+
+Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - Mean","A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots.
+
+
+
+Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - Median","A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots.
+
+
+
+Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - IQR","A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots.
+
+
+
+Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - Shape","For each genre, the data scientist also fitted a regression line to model the relationship between movies' budgets and their revenues. A scatterplot of this relationship, along with the fitted regression line, is shown for each of the four genres below. For which genre would the fitted regression model produce the highest $R^2$ value?","You are working on a team that is making a deterministic model to quickly screen through applications for a new position at the company. Based on employment laws, your model may not include variables such as age, race, and gender, which could be potentially discriminatory.
+
+Your colleague suggests including a rule that eliminates candidates with more than 20 years of previous work experience, because they may have high salary expectations. Are there ethical implications of using this variable to select candidates?
+
+Explain your answer.","Data scientists at FiveThirtyEight administered a food frequency questionnaire. With 54 complete responses they found that people who ate bananas tended to score higher on the SAT verbal section than the SAT math section ($p-value =0.0073$). An article reporting the results of this study has the headline, ""Eat more bananas to score higher on the SAT verbal section"". 
+Explain why this title is misleading.","The visualization below displays the 14-day rolling average of new COVID-19 cases January 1 - August 31, 2021 in the United States. Each plot represents a state or Washington, D.C., and is labeled using the state's abbreviation (e.g., MA = Massachusetts). The shaded area under each curve represents the increase in new cases since the state's minimum point in 2021. This is a recreation of a similar plot that originally appeared in the New York Times.
+
+
+
+ 
+What do we learn from this plot about COVID-19 cases in the US?","The visualization below displays the 14-day rolling average of new COVID-19 cases January 1 - August 31, 2021 in the United States. Each plot represents a state or Washington, D.C., and is labeled using the state's abbreviation (e.g., MA = Massachusetts). The shaded area under each curve represents the increase in new cases since the state's minimum point in 2021. This is a recreation of a similar plot that originally appeared in the New York Times.
+
+
+
+ 
+
+Compare KY (Kentucky) in the South region to CA (California) in the West region.Based on this plot, can we conclude there was a difference in overall number of COVID cases in KY and CA in August 2021? Explain.","The visualization below displays the 14-day rolling average of new COVID-19 cases January 1 - August 31, 2021 in the United States. Each plot represents a state or Washington, D.C., and is labeled using the state's abbreviation (e.g., MA = Massachusetts). The shaded area under each curve represents the increase in new cases since the state's minimum point in 2021. This is a recreation of a similar plot that originally appeared in the New York Times.
+
+
+
+ 
+
+Please type the phrase ""I am passing this attention check"" in the box below.","COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID.
+
+
+
+We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates.
+
+
+
+ 
+
+ 
+Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - Sensitivity","COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID.
+
+
+
+We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates.
+
+
+
+ 
+
+ 
+Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - Specificity","COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID.
+
+
+
+We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates.
+
+
+
+ 
+
+ 
+Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - False positive rate","COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID.
+
+
+
+We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates.
+
+
+
+ 
+
+ 
+Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - False negative rate","For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
+
+
+
+
+Men in Austen's novels are more likely to have 'dared', 'expected', and 'ran' than women. - Selected Choice","For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
+
+
+
+
+Men in Austen's novels are more likely to have 'dared', 'expected', and 'ran' than women. - Need additional information to determine this: - Text","For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
+
+
+
+Women in Austen's novels are more likely to have 'remembered', 'felt', and 'cried' than men. - Selected Choice","For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
+
+
+
+Women in Austen's novels are more likely to have 'remembered', 'felt', and 'cried' than men. - Need additional information to determine this: - Text","For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
+
+
+
+Women in Austen's novels are more likely to have 'remembered' than 'feared'. - Selected Choice","For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
+
+
+
+Women in Austen's novels are more likely to have 'remembered' than 'feared'. - Need additional information to determine this: - Text","The following is an intensity map of the unemployment rate among adults in the counties in the United States (based on data from 2019).
+
+
+
+
+
+Indicate which of the following data you need to recreate this map: (Select all that apply.)","A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area.
+
+
+
+ 
+
+ 
+What price would the tree predict for a house with 3200 ft.$^2$ of living area, 1.5 bathrooms, and 1 fireplace?","A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area.
+
+
+
+ 
+
+ Please select ""$262,972"".","A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area.
+
+
+
+ 
+
+ What price would the tree predict for a house with 1200 ft.$^2$ of living area and 1.5 bathrooms?","An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
+
+
+
+ 
+Indicate whether each of the following conclusions are valid:
+
+
+
+Over time the company is getting more returning users regardless of the version of the website.","An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
+
+
+
+ 
+Indicate whether each of the following conclusions are valid:
+
+On the 31st day, the blue version of the website is expected to have higher number of returning users.","An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
+
+
+
+ 
+Indicate whether each of the following conclusions are valid:
+
+On the 60th day, the blue version of the website is expected to have higher number of returning users.","A data science student wants to create an image recognition algorithm to identify whether a university professor belongs to a department in the sciences or not. To do this, she collects data by scraping several university photo archives of university faculty. She labels faculty in the photos as ""Sciences"" or ""Not sciences"". The images below depict a small representative sample of her data.
+
+Sciences
+
+
+
+
+
+
+
+Not sciences
+
+
+
+
+
+
+
+The data science student plans to use these photos of current university faculty to predict whether they are scientists. What concerns might you have about the predictions from this algorithm?
+
+
+
+Explain:",A newspaper reports on the results of a survey from a small (,"Below is data that was recorded in an activity journal.
+
+
+
+ 
+
+A data scientist reformats the data into a table so that each variable represented in the data is recorded in a single column. Describe what each of the columns of this table will contain, as well as what each row or observation of the table will represent.","The table below provides data about 10 movies released in the United States. It provides data on the movie's title (title), the movie's director (director), the date the movie was released (release_date), the season the movie was released (season), the worldwide gross intake in U.S. dollars (gross), the cleaned version of the worldwide gross intake in U.S. dollars (gross_clean), and whether or not the movie won the Best Picture Oscar (best_picture).
+
+
+
+
+
+
+Describe a process that you could use to generate the data in the season column using the information in the release_date column.","The table below provides data about 10 movies released in the United States. It provides data on the movie's title (title), the movie's director (director), the date the movie was released (release_date), the season the movie was released (season), the worldwide gross intake in U.S. dollars (gross), the cleaned version of the worldwide gross intake in U.S. dollars (gross_clean), and whether or not the movie won the Best Picture Oscar (best_picture).
+
+
+
+
+ 
+Describe a process that you could use to generate the data in the gross_clean column using the information in the gross column.","The table below provides data about 10 movies released in the United States. It provides data on the movie's title (title), the movie's director (director), the date the movie was released (release_date), the season the movie was released (season), the worldwide gross intake in U.S. dollars (gross), the cleaned version of the worldwide gross intake in U.S. dollars (gross_clean), and whether or not the movie won the Best Picture Oscar (best_picture).
+
+
+
+You have been tasked with adding a new column called nominated_for_best_picture which indicates whether or not each movie was nominated for the Best Picture Oscar (""Yes"" if it was, ""No"" if it was not). Is there sufficient information in this dataset to generate this new column? Explain.","The table below provides data about 10 movie directors. It provides data on the director's name (director), the number of Oscars the movie's director has been nominated for (nominations), and the number of Oscars the director has won (oscars).
+
+
+
+
+ 
+
+
+
+Use the data in the Movies Table and in the Directors Table to answer the following questions. For each question, what is the result of carrying out the given pseudocode (ie. code recipe)?
+
+
+ 
+START_WITH(the Movies table) then
+
+    KEEP_ROWS_WHERE(the season value is Fall) then
+
+    COUNT(the number of rows)","The table below provides data about 10 movie directors. It provides data on the director's name (director), the number of Oscars the movie's director has been nominated for (nominations), and the number of Oscars the director has won (oscars).
+
+
+
+
+ 
+
+
+
+Use the data in the Movies Table and in the Directors Table to answer the following questions. For each question, what is the result of carrying out the given pseudocode (ie. code recipe)?
+
+
+
+START_WITH(the Movies table) then
+
+    KEEP_ROWS_WHERE(the season value is Fall) then
+
+    COUNT(the number of rows)","The table below provides data about 10 movie directors. It provides data on the director's name (director), the number of Oscars the movie's director has been nominated for (nominations), and the number of Oscars the director has won (oscars).
+
+
+
+
+ 
+
+
+
+Use the data in the Movies Table and in the Directors Table to answer the following questions. For each question, what is the result of carrying out the given pseudocode (ie. code recipe)?
+
+
+
+START_WITH(the Movies table) then
+
+    KEEP_ROWS_WHERE(the season value is Fall) then
+
+    COUNT(the number of rows)","Approximately how long did it take you to complete the assessment? If you worked on it in multiple sittings, only consider active working time in the total.","The assessment you just completed has been developed by a research team comprised of Evan Dragich (Duke Statistical Science undergraduate student), Dr. Mine Çetinkaya-Rundel and Dr. Maria Tackett (Duke Statistical Science faculty), Dr. Andy Zieffler and Chelsey Legacy (University of Minnesota), Dr. Mine Dogucu (UC Irvine) and Dr. Matt Beckman (Penn State University). The goal of this research team is to develop a standardized data science assessment, to accurately measure introductory data science students’ learning outcomes, and the assessment you just took is our current version of this assessment.
+
+
+
+We are asking for your permission to use your anonymized responses to the assessment as feedback to our research team on the clarity and wording of questions, and the pace of the overall assessment. We are not interested in measuring your performance or assigning a score based on your responses to the survey. We are still in the process of refining questions, and thus only looking to analyze the set of student responses broadly for common trends that emerge.
+
+
+
+If you agree for the research team to access your answers, please choose “opt in” below. If you prefer to not share your answers with the research team, please choose “opt out” below.
+
+
+
+Note that the only individual who will see the opt-in/out information is Evan Dragich. Opt-in/out information will not be shared with your course professor.
+
+
+
+If you opt in, your name and email address will be removed from your responses before being shared with the research team.
+
+
+
+If you have any questions about this research, please contact me at emd48@duke.edu. You can also contact Duke Campus IRB at campusirb@duke.edu. Please refer to protocol number 2022-0399 if you contact the IRB.
+
+
+
+I would also be happy to anonymously pass on any questions regarding your involvement to your course professor, or to my faculty advisor, Dr. Mine Çetinkaya-Rundel.
+
+
+
+Thank you in advance for your consideration."
+"{""ImportId"":""startDate"",""timeZone"":""America/Denver""}","{""ImportId"":""endDate"",""timeZone"":""America/Denver""}","{""ImportId"":""status""}","{""ImportId"":""progress""}","{""ImportId"":""duration""}","{""ImportId"":""finished""}","{""ImportId"":""recordedDate"",""timeZone"":""America/Denver""}","{""ImportId"":""recipientLastName""}","{""ImportId"":""recipientFirstName""}","{""ImportId"":""recipientEmail""}","{""ImportId"":""externalDataReference""}","{""ImportId"":""locationLatitude""}","{""ImportId"":""locationLongitude""}","{""ImportId"":""distributionChannel""}","{""ImportId"":""userLanguage""}","{""ImportId"":""QID93_TEXT""}","{""ImportId"":""QID56""}","{""ImportId"":""QID91_TEXT""}","{""ImportId"":""QID57_1""}","{""ImportId"":""QID57_2""}","{""ImportId"":""QID57_3""}","{""ImportId"":""QID57_4""}","{""ImportId"":""QID58""}","{""ImportId"":""QID59_TEXT""}","{""ImportId"":""QID60_TEXT""}","{""ImportId"":""QID61_TEXT""}","{""ImportId"":""QID63_TEXT""}","{""ImportId"":""QID92_TEXT""}","{""ImportId"":""QID65_1""}","{""ImportId"":""QID65_2""}","{""ImportId"":""QID65_3""}","{""ImportId"":""QID65_4""}","{""ImportId"":""QID68""}","{""ImportId"":""QID68_3_TEXT""}","{""ImportId"":""QID69""}","{""ImportId"":""QID69_3_TEXT""}","{""ImportId"":""QID70""}","{""ImportId"":""QID70_3_TEXT""}","{""ImportId"":""QID71""}","{""ImportId"":""QID72""}","{""ImportId"":""QID94""}","{""ImportId"":""QID73""}","{""ImportId"":""QID74""}","{""ImportId"":""QID75""}","{""ImportId"":""QID76""}","{""ImportId"":""QID77_TEXT""}","{""ImportId"":""QID78""}","{""ImportId"":""QID79_TEXT""}","{""ImportId"":""QID80_TEXT""}","{""ImportId"":""QID81_TEXT""}","{""ImportId"":""QID82_TEXT""}","{""ImportId"":""QID83_TEXT""}","{""ImportId"":""QID84_TEXT""}","{""ImportId"":""QID85_TEXT""}","{""ImportId"":""QID90_TEXT""}","{""ImportId"":""QID96""}"
+2/20/2023 8:20,2/20/2023 8:24,Survey Preview,100,262,TRUE,2/20/2023 8:24,,,,,36.039,-78.878,preview,EN,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2/21/2023 12:20,2/21/2023 12:25,Survey Preview,100,328,TRUE,2/21/2023 12:25,,,,,44.9696,-93.2348,preview,EN,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2/21/2023 12:19,2/21/2023 12:25,Survey Preview,100,384,TRUE,2/21/2023 12:25,,,,,40.7957,-77.8618,preview,EN,3,,,,,,,Horror,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2/21/2023 12:23,2/21/2023 12:28,Survey Preview,100,311,TRUE,2/21/2023 12:28,,,,,51.5095,-0.0955,preview,EN,4,,,,,,,Animation,tesstsdhd,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2/21/2023 12:25,2/21/2023 12:29,Survey Preview,100,199,TRUE,2/21/2023 12:29,,,,,44.9696,-93.2348,preview,EN,5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4/1/2023 8:56,4/1/2023 8:59,Survey Preview,100,178,TRUE,4/1/2023 8:59,,,,,36.039,-78.878,preview,EN,6,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4/8/2023 11:45,4/8/2023 12:04,IP Address,100,1110,TRUE,4/8/2023 12:04,,,,,36.0229,-78.9464,anonymous,EN,7,City a,More of the paths pass by/through A than B,Plot A,Plot D,Plot C,Plot B,Action,"Yes -- affects age variable, also odd to filter people based on salary expectation -- only give offers to those who accept salary terms ?",Correlation is not causation -- more bananas could be based on region or SE status or health consciousness or family dynamic or parental care -- third variable problem,"In order from most to least new covid cases: states in the South, West, North Central, and Northeast -- FL among the highest, ME and MD among the lowest ","Data seems to be fitted to a single y-axis across plots, but only shows new COVID cases -- would need original number to compare",I am passing this attention check,Plot B,Plot C,"Plot B,Plot C","Plot B,Plot C",FALSE,,TRUE,,TRUE,,"County boundaries,Unemployment rate in each county","$326,267 ","$262,972 ","$151,424 ",Valid,Cannot determine from this plot,Valid,Bad race and gender divide ,Class year and sports played,"date, cals burned, activity type, stand goal, exercise goal, move goal (met/not met)",use month and date and divide into four seasons using conditionals,remove $ and M and convert to numeric,no -- only whether they won -- no other way to determine nomination than the nomination itself ,4,4,4,10-15 mins,"Yes, I agree to allow my responses to the assessment as research data."
+4/7/2023 11:39,4/7/2023 11:41,IP Address,94,113,FALSE,4/14/2023 11:41,,,,,,,anonymous,EN,8,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4/7/2023 12:16,4/7/2023 12:22,IP Address,12,367,FALSE,4/14/2023 12:22,,,,,,,anonymous,EN,9,City b,"B is directly in one of the paths. A is in the middle of many, but does not find itself directly on any.",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4/7/2023 13:07,4/7/2023 13:08,IP Address,6,61,FALSE,4/14/2023 13:08,,,,,,,anonymous,EN,10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4/8/2023 11:57,4/8/2023 12:02,IP Address,15,303,FALSE,4/15/2023 12:02,,,,,,,anonymous,EN,11,City b,"It is on a path, whereas A is not",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4/5/2023 15:51,4/9/2023 9:49,IP Address,94,323861,FALSE,4/16/2023 9:49,,,,,,,anonymous,EN,12,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4/7/2023 12:39,4/9/2023 22:02,IP Address,6,206574,FALSE,4/16/2023 22:02,,,,,,,anonymous,EN,13,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4/10/2023 11:43,4/10/2023 11:59,IP Address,32,949,FALSE,4/17/2023 11:59,,,,,,,anonymous,EN,14,City a,it sits in-between a larger number of the paths,Plot A,Plot D,Plot D,"Plot B,Plot C,Plot D",Horror,yeah 20 years of experience is a long time and most likely includes older people. this is discriminating against older people probably. ,questionnaires cannot be used to determine causality; it's very possible there is a 3rd unconsidered confounding variable where someone who is already inclined to score high also happens to eat bananas for whatever reason,the whole country experienced a dip then rise in covid cases,"no; the shading is in reference to the state's minimum point in 2021. without knowing the absolute number of that minimum point for both states, we cannot compare overall numbers of covid cases",I am passing this attention check,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4/12/2023 7:04,4/12/2023 7:05,IP Address,12,20,FALSE,4/19/2023 7:05,,,,,,,anonymous,EN,15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4/13/2023 19:27,4/13/2023 19:27,IP Address,6,28,FALSE,4/20/2023 19:27,,,,,,,anonymous,EN,16,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6/13/2023 12:50,6/13/2023 12:55,IP Address,6,347,FALSE,6/20/2023 12:55,,,,,,,anonymous,EN,17,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2/25/2024 10:04,2/25/2024 10:55,IP Address,100,3050,TRUE,2/25/2024 10:55,,,,,35.9145,-78.9225,anonymous,EN,fake data (EM),City a,"There are more simulated storm lines near City a. Therfore, I think that City a is more likely to be hit by the storm.",Plot A,Plot D,Plot D,Plot B,Horror,I do believe there are ethical concerns with the colleague's suggestion. Providing no opportunity to those with an abundence of experience is excluding part of the hiring pool on a variable that is not indicative of how qualified they are for the position.   ,This is misleading because correlation does not imply causation. ,It appears that the South region had more covid cases at the end of the rolling average. ,"It is hard to come to this conclusion without know the y-axis for KY and CA. If they are not on the same scale, we can not conclude this. If they are, it appears that Kentucky and CA are different.",I am passing this attention check,Plot A,Plot A,Plot B,Plot B,FALSE,,TRUE,,TRUE,,"County boundaries,Number of adults living in each county,Number of unemployed adults living in each county",Can't be determined from the information given.,"$262,972 ","$151,424 ",Valid,Cannot determine from this plot,Cannot determine from this plot,"There appears to be groups within these data that are classified as Sciences vs Not sciences. These photos may train a model to predict that those of color can not be in the sciences, causing me to have ethical concerns around the predictions. ",None of the above,"We would have a day, activity, stand goal, exercise goal, and move goal column. Each row is an observation of the individual. ","You could specify a group of months that corrospond to a given season. Then, generate the season information based on which month was identified in the release date column. You could do this by search for the specific month text strings. ",You could strip off the $ and the M text strings in the gross column to generate the gross clean column. ,"There is not enough information here. We have if a movie won best picture, but multiple pictures are nominated for the award, and we have no way of knowing if movies that did not win best picture were even nominated. ","This code would return the number movies that had ""Fall"" as their season input. ",Same question twice? ,Same question ?,~ 1 hour,"Yes, I agree to allow my responses to the assessment as research data."
+2/29/2024 9:10,2/29/2024 9:25,IP Address,100,927,TRUE,2/29/2024 9:25,,,,,35.9145,-78.9225,anonymous,EN,fake-data-2,City b,I see one line going through it so I think it will hit that,"Plot A,Plot B",Plot C,Plot D,"Plot A,Plot D",Action,"I do not see any issues with this. If this is who the company is looking to hire, then they should be able to use an experience indicator variable to subset their hiring pool.","I don't think you can say that eating something, like bananas, leads to or causes higher test scores. Therfore, the title is misleading. ",The plot is hard to read. It looks like we learn that most states have some spikes of new cases closer to August versus January. ,"I'm not sure how to interpret the total number with no y-axis. However, KY has a higher density of cases than CA, so it may be plausible to make this conclusion if the y-axis is consistent across all states. ",I am passing this attention check,Plot A,Plot A,Plot B,"Plot B,Plot C",FALSE,,TRUE,,TRUE,,"County boundaries,Number of unemployed adults living in each county,Total population of the county",Can't be determined from the information given.,"$262,972 ","$151,424 ",Valid,Cannot determine from this plot,Cannot determine from this plot,These data may lead to model predictions that have a clear racial bias when predicting sciences vs non sciences. ,None of the above,"You would have the variables day, exercise, calories, stand goal, exercise goal, move goal, and date. 
+
+Each row represents an activity log from this individual. ","I would categorize each month into 1 of the 4 seasons, and then use a case_when statement that would observe the release_date column, and fill in the correct season in the season column",I would remove the text strings of $ and M,No. Movies that did not win may have never been nominated in the first place.,This code would produce a frequency table that counted up the number of Fall seasons in the data set,This code would produce a frequency table that counted up the number of Fall seasons in the data set,This code would produce a frequency table that counted up the number of Fall seasons in the data set,45 minutes,"Yes, I agree to allow my responses to the assessment as research data."
+2/29/2024 9:27,2/29/2024 9:40,IP Address,100,747,TRUE,2/29/2024 9:40,,,,,35.9145,-78.9225,anonymous,EN,fake-data-3,City a,"There are a lot more lines close to a, and the storm is not guarenteed to follow one of these lines. It is a higher chance of going through a.",Plot A,Plot D,Plot D,"Plot B,Plot D",Animation,I don't think it is ethical to exclude a part of the hiring population based on a variable of inexperience. This feels like unequal opportunity of empolyment. ,Correlation does not imply causation. That doesn't make sense.,"We learn that the sound seemingly had higher spikes than other regions, and most spikes happened in August. ",We can not conclude that. We have no way of knowing the baseline for each state. This graph is misleading. ,I am passing this attention check,"Plot A,Plot C","Plot A,Plot B","Plot B,Plot C","Plot B,Plot C",FALSE,,TRUE,,FALSE,,"County boundaries,Unemployment rate in each county,Number of adults living in each county,Number of unemployed adults living in each county,Total population of the county","$501,876 ","$262,972 ","$210,950 ",Invalid,Valid,Invalid,"These data make train the model to not include anyone of color in the sciences, which we know to be absurd. ",GPA and major,"Day, exercise, date, goals met
+
+Each observation represents a day observed on this individual","I would categorize the months into specific seasons, and use matching to generale the season column",All you need to do is remove the $ and M,"Yes. I'm going to assume that if they were not nominated, that it would be represented by an NA. I don't think it makes sense to say they lost if they never had the chance to win. So, we could use the No and Yes values to indicate nominated. ","We would start with the movies table, subset it by the rows that had the value of Fall in the season column, and make a table counting them up","We would start with the movies table, subset it by the rows that had the value of Fall in the season column, and make a table counting them up","We would start with the movies table, subset it by the rows that had the value of Fall in the season column, and make a table counting them up",20 min,"Yes, I agree to allow my responses to the assessment as research data."
