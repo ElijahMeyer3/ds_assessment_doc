@@ -4,13 +4,61 @@ format: html
 editor: visual
 ---
 
-## How to make this doc
+## Packages
 
-Write report to take data from class 
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(kableExtra)
+```
 
-write code to create the following 
+## Data 
 
-in-line code to summarize high level data (time taken / completed vs not / etc) 
+```{r}
+#| warning: false
+#| message: false
+data <- read_csv("data/ds-assessment-anonymized-fake-data.csv") %>% slice(3:nrow(.)) |>
+  mutate(`Duration (in seconds)` = as.numeric(`Duration (in seconds)`))
+```
+
+## Report 
+
+There are `r nrow(data) - 2` participants in our data set. Of the `r nrow(data) - 2` participants, `r sum(data$Finished == TRUE)` made it to the last question of the survey. The average time it took to complete this survey was `r round(mean(data$"Duration (in seconds)", na.rm = T)/60, 2)` minutes, with `r sum((data$"Duration (in seconds)"/60) > 60)` students taking more than 1 hour to complete the assessment, and `r sum((data$"Duration (in seconds)"/60) > 120)` students taking more than 2 hours to complete the assessment.  
+
+
+```{r}
+#| echo: false
+
+att <- data |>
+  select(contains("Attention")) |>
+  filter(`Attention Check 1/2` == "I am passing this attention check",
+        `Attention Check 2/2` == "$262,972") |>
+  nrow()
+```
+
+`r att` students correctly passed both attention checks in the survey. 
+
+## Missing observations 
+
+Below is are the percentages of missing observations by question. 
+
+```{r}
+#| echo: false
+percent_missing <- colSums(
+  is.na(
+    data |>
+      select(17:ncol(data)) 
+  )) / nrow(data) 
+
+percent_missing |>
+  data.frame() |>
+  kbl() |>
+  kable_material_dark() |>
+    column_spec(2, color = "white",
+              background = spec_color(percent_missing, end = 0.7))
+                            
+```
 
 ## MC Questions 
 
@@ -19,6 +67,55 @@ questions down the rows
 answers down the columns 
 % who chose what 
 % who got correct
+
+```{r}
+
+data <- read_csv("data/ds-assessment-anonymized-fake-data.csv")
+
+test <- data |>
+  select(`Storm Paths` , `Realty Tree 2/2`) |>
+  slice(-2)
+
+
+names(test) <- test |> 
+  slice(1) |> 
+  unlist() 
+
+test <- test |> 
+  slice(-1)
+
+test[is.na(test)] <- "0"
+
+test |>
+  pivot_longer(1:ncol(test), 
+               names_to = "question",
+               values_to = "answer"
+    
+  ) |>
+  mutate(index = rep(1:2, nrow(test))) |>
+  group_by(question) |>
+  summarize(percent_correct = mean(answer == "City a" | answer == "$151,424" , na.rm = T)) |>
+  kbl()
+    
+    
+
+
+
+MC <- data |>
+  select(`Storm Paths`, `Movie Budgets 1_1`, `Movie Budgets 1_2`, `Movie Budgets 1_3`, `Movie Budgets 1_4`, `Movie Budgets 2`, `Disease Screening _1`, `Disease Screening _2`, `Disease Screening _3`, `Disease Screening _4`, `He Said She Said 1/3`, `He Said She Said 2/3` , `He Said She Said 3/3`, `Build-a-Plot`, `Realty Tree 1/2`, `Realty Tree 2/2`, `Website Testing 1/3`, `Website Testing 2/3`, `Website Testing 3/3` )
+
+```
+
+
+
+## How to make this doc
+
+Write report to take data from class 
+
+write code to create the following 
+
+in-line code to summarize high level data (time taken / completed vs not / etc) 
+
 
 ## Short answer questions
 
