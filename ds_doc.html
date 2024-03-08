@@ -70,6 +70,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="ds_doc_files/libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="ds_doc_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -109,7 +138,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="data">Data</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ds-assessment-anonymized-fake-data.csv"</span>) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">3</span><span class="sc">:</span><span class="fu">nrow</span>(.)) <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Duration (in seconds)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="st">`</span><span class="at">Duration (in seconds)</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Duration (in seconds)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="st">`</span><span class="at">Duration (in seconds)</span><span class="st">`</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>data_question <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/ds-assessment-anonymized-fake-data.csv"</span>) <span class="sc">%&gt;%</span> <span class="fu">replace</span>(<span class="fu">is.na</span>(.), <span class="st">"0"</span>) <span class="co">#doesn't work with other pipe. Perhaps better way to do this? </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># need these data to have question information</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>MC_questions <span class="ot">&lt;-</span> data_question <span class="sc">|&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">Storm Paths</span><span class="st">`</span>, <span class="st">`</span><span class="at">Movie Budgets 1_1</span><span class="st">`</span>, <span class="st">`</span><span class="at">Movie Budgets 1_2</span><span class="st">`</span>, <span class="st">`</span><span class="at">Movie Budgets 1_3</span><span class="st">`</span>, <span class="st">`</span><span class="at">Movie Budgets 1_4</span><span class="st">`</span>, <span class="st">`</span><span class="at">Movie Budgets 2</span><span class="st">`</span>, <span class="st">`</span><span class="at">Disease Screening&nbsp;_1</span><span class="st">`</span>, <span class="st">`</span><span class="at">Disease Screening&nbsp;_2</span><span class="st">`</span>, <span class="st">`</span><span class="at">Disease Screening&nbsp;_3</span><span class="st">`</span>, <span class="st">`</span><span class="at">Disease Screening&nbsp;_4</span><span class="st">`</span>, <span class="st">`</span><span class="at">He Said She Said 1/3</span><span class="st">`</span>, <span class="st">`</span><span class="at">He Said She Said 2/3</span><span class="st">`</span> , <span class="st">`</span><span class="at">He Said She Said 3/3</span><span class="st">`</span>, <span class="st">`</span><span class="at">Build-a-Plot</span><span class="st">`</span>, <span class="st">`</span><span class="at">Realty Tree 1/2</span><span class="st">`</span>, <span class="st">`</span><span class="at">Realty Tree 2/2</span><span class="st">`</span>, <span class="st">`</span><span class="at">Website Testing 1/3</span><span class="st">`</span>, <span class="st">`</span><span class="at">Website Testing 2/3</span><span class="st">`</span>, <span class="st">`</span><span class="at">Website Testing 3/3</span><span class="st">`</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="report" class="level2">
@@ -119,10 +155,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="missing-observations" class="level2">
 <h2 class="anchored" data-anchor-id="missing-observations">Missing observations</h2>
-<p>Below is are the percentages of missing observations by question.</p>
+<p>Below are the percentages of missing observations by question. Questions that have at least 0.8 percent missing are highlighted in red.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="lightable-material-dark table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th"></th>
@@ -132,163 +168,163 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Storm Paths</td>
-<td style="text-align: right; color: white !important; background-color: rgba(68, 1, 84, 1) !important;">0.65</td>
+<td style="text-align: right;">0.65</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Storm Paths Explana</td>
-<td style="text-align: right; color: white !important; background-color: rgba(68, 1, 84, 1) !important;">0.65</td>
+<td style="text-align: right;">0.65</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Movie Budgets 1_1</td>
-<td style="text-align: right; color: white !important; background-color: rgba(65, 68, 135, 1) !important;">0.75</td>
+<td style="text-align: right;">0.75</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Movie Budgets 1_2</td>
-<td style="text-align: right; color: white !important; background-color: rgba(65, 68, 135, 1) !important;">0.75</td>
+<td style="text-align: right;">0.75</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Movie Budgets 1_3</td>
-<td style="text-align: right; color: white !important; background-color: rgba(65, 68, 135, 1) !important;">0.75</td>
+<td style="text-align: right;">0.75</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Movie Budgets 1_4</td>
-<td style="text-align: right; color: white !important; background-color: rgba(65, 68, 135, 1) !important;">0.75</td>
+<td style="text-align: right;">0.75</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Movie Budgets 2</td>
-<td style="text-align: right; color: white !important; background-color: rgba(68, 1, 84, 1) !important;">0.65</td>
+<td style="text-align: right;">0.65</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Application Screenin</td>
-<td style="text-align: right; color: white !important; background-color: rgba(72, 36, 117, 1) !important;">0.70</td>
+<td style="text-align: right;">0.70</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Banana Conclusions&nbsp;</td>
-<td style="text-align: right; color: white !important; background-color: rgba(65, 68, 135, 1) !important;">0.75</td>
+<td style="text-align: right;">0.75</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">COVID Map - 1/2</td>
-<td style="text-align: right; color: white !important; background-color: rgba(65, 68, 135, 1) !important;">0.75</td>
+<td style="text-align: right;">0.75</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">COVID Map - 2/2</td>
-<td style="text-align: right; color: white !important; background-color: rgba(65, 68, 135, 1) !important;">0.75</td>
+<td style="text-align: right;">0.75</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Attention Check 1/2</td>
-<td style="text-align: right; color: white !important; background-color: rgba(65, 68, 135, 1) !important;">0.75</td>
+<td style="text-align: right;">0.75</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Disease Screening&nbsp;_1</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Disease Screening&nbsp;_1</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Disease Screening&nbsp;_2</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Disease Screening&nbsp;_2</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Disease Screening&nbsp;_3</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Disease Screening&nbsp;_3</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Disease Screening&nbsp;_4</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Disease Screening&nbsp;_4</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">He Said She Said 1/3</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">He Said She Said 1/3</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">He Said She Said 1/3_3_TEXT</td>
-<td style="text-align: right; color: white !important; background-color: rgba(67, 191, 113, 1) !important;">1.00</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">He Said She Said 1/3_3_TEXT</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">1.00</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">He Said She Said 2/3</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">He Said She Said 2/3</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">He Said She Said 2/3_3_TEXT</td>
-<td style="text-align: right; color: white !important; background-color: rgba(67, 191, 113, 1) !important;">1.00</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">He Said She Said 2/3_3_TEXT</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">1.00</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">He Said She Said 3/3</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">He Said She Said 3/3</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">He Said She Said 3/3_3_TEXT</td>
-<td style="text-align: right; color: white !important; background-color: rgba(67, 191, 113, 1) !important;">1.00</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">He Said She Said 3/3_3_TEXT</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">1.00</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Build-a-Plot</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Build-a-Plot</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Realty Tree 1/2</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Realty Tree 1/2</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Attention Check 2/2</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Attention Check 2/2</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Realty Tree 2/2</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Realty Tree 2/2</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Website Testing 1/3</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Website Testing 1/3</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Website Testing 2/3</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Website Testing 2/3</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Website Testing 3/3</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Website Testing 3/3</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Image Recognition1/1</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Image Recognition1/1</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">DataConfidentiali1/1</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">DataConfidentiali1/1</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Activity Journal 1/1</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Activity Journal 1/1</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Movie Wrangling 1/6</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Movie Wrangling 1/6</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Movie Wrangling 2/6</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Movie Wrangling 2/6</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Movie Wrangling 3/6</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Movie Wrangling 3/6</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Movie Wrangling 4/6</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Movie Wrangling 4/6</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Movie Wrangling 5/6</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Movie Wrangling 5/6</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Movie Wrangling 6/6</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Movie Wrangling 6/6</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Time_Spent</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Time_Spent</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Consent</td>
-<td style="text-align: right; color: white !important; background-color: rgba(53, 95, 141, 1) !important;">0.80</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">Consent</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.80</td>
 </tr>
 </tbody>
 </table>
@@ -297,20 +333,158 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+<section id="percent-correct" class="level2">
+<h2 class="anchored" data-anchor-id="percent-correct">Percent Correct</h2>
+<p>Below is a table that shares the percentage of correct responses across 20 students. Questions are ordered as they appear in the survey and highlighted in red indicate a percentage less than 0.5.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">question</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mc_question_num</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pct_correct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">1</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area. What price would the tree predict for a house with 3200 ft.$^2$ of living area, 1.5 bathrooms, and 1 fireplace?</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">2</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area. What price would the tree predict for a house with 1200 ft.$^2$ of living area and 1.5 bathrooms?</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">3</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - Mean</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">4</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - Median</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">5</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - IQR</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">6</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - Shape</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">7</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">For each genre, the data scientist also fitted a regression line to model the relationship between movies' budgets and their revenues. A scatterplot of this relationship, along with the fitted regression line, is shown for each of the four genres below. For which genre would the fitted regression model produce the highest $R^2$ value?</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">8</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID. We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - Sensitivity</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">9</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID. We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - Specificity</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">10</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.05</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID. We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - False positive rate</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">11</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID. We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - False negative rate</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">12</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need. Men in Austen's novels are more likely to have 'dared', 'expected', and 'ran' than women. - Selected Choice</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">13</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need. Women in Austen's novels are more likely to have 'remembered', 'felt', and 'cried' than men. - Selected Choice</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">14</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need. Women in Austen's novels are more likely to have 'remembered' than 'feared'. - Selected Choice</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">15</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">The following is an intensity map of the unemployment rate among adults in the counties in the United States (based on data from 2019). Indicate which of the following data you need to recreate this map: (Select all that apply.)</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">16</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.05</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website. Indicate whether each of the following conclusions are valid: Over time the company is getting more returning users regardless of the version of the website.</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">17</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website. Indicate whether each of the following conclusions are valid: On the 31st day, the blue version of the website is expected to have higher number of returning users.</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">18</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: red !important;">An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website. Indicate whether each of the following conclusions are valid: On the 60th day, the blue version of the website is expected to have higher number of returning users.</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">19</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: red !important;">0.10</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="storm-paths" class="level1">
+<h1>Storm Paths</h1>
+<p><strong>Question</strong>: The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ds_doc_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="realty-tree-22" class="level1">
+<h1>Realty Tree 2/2</h1>
+<p><strong>Question</strong> A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area. What price would the tree predict for a house with 1200 ft.<span class="math inline">\(^2\)</span> of living area and 1.5 bathrooms?</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ds_doc_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <section id="how-to-make-this-doc" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-make-this-doc">How to make this doc</h2>
 <p>Write report to take data from class</p>
 <p>write code to create the following</p>
 <p>in-line code to summarize high level data (time taken / completed vs not / etc)</p>
 </section>
-<section id="mc-questions" class="level2">
-<h2 class="anchored" data-anchor-id="mc-questions">MC Questions</h2>
-<p>Section 1 - MC questions down the rows answers down the columns % who chose what % who got correct</p>
-</section>
 <section id="short-answer-questions" class="level2">
 <h2 class="anchored" data-anchor-id="short-answer-questions">Short answer questions</h2>
 <p>Section 2 - SA</p>
 <p>Look at creating hisogram of number of words, etc. Some sort of meta data (tidytext package)</p>
+</section>
 </section>
 
 </main>

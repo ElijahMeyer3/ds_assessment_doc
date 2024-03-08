@@ -20,6 +20,13 @@ library(kableExtra)
 #| message: false
 data <- read_csv("data/ds-assessment-anonymized-fake-data.csv") %>% slice(3:nrow(.)) |>
   mutate(`Duration (in seconds)` = as.numeric(`Duration (in seconds)`))
+
+data_question <- read_csv("data/ds-assessment-anonymized-fake-data.csv") %>% replace(is.na(.), "0") #doesn't work with other pipe. Perhaps better way to do this? 
+
+# need these data to have question information
+
+MC_questions <- data_question |>
+  select(`Storm Paths`, `Movie Budgets 1_1`, `Movie Budgets 1_2`, `Movie Budgets 1_3`, `Movie Budgets 1_4`, `Movie Budgets 2`, `Disease Screening _1`, `Disease Screening _2`, `Disease Screening _3`, `Disease Screening _4`, `He Said She Said 1/3`, `He Said She Said 2/3` , `He Said She Said 3/3`, `Build-a-Plot`, `Realty Tree 1/2`, `Realty Tree 2/2`, `Website Testing 1/3`, `Website Testing 2/3`, `Website Testing 3/3` )
 ```
 
 ## Report 
@@ -41,7 +48,13 @@ att <- data |>
 
 ## Missing observations 
 
-Below is are the percentages of missing observations by question. 
+```{r}
+#| echo: false
+set.cutoff <- .8
+set.cutoff.correct <- .5
+```
+
+Below are the percentages of missing observations by question. Questions that have at least `r set.cutoff` percent missing are highlighted in red. 
 
 ```{r}
 #| echo: false
@@ -49,63 +62,148 @@ percent_missing <- colSums(
   is.na(
     data |>
       select(17:ncol(data)) 
-  )) / nrow(data) 
+  )) / nrow(data)
+
+percent_missing <- as.data.frame(percent_missing)
+
+color.me <- which(percent_missing >=set.cutoff) # set cut off to highlight table
 
 percent_missing |>
   data.frame() |>
-  kbl() |>
-  kable_material_dark() |>
-    column_spec(2, color = "white",
-              background = spec_color(percent_missing, end = 0.7))
+  kable(booktabs = T) %>%
+  kable_styling() %>%
+  row_spec(color.me, bold = T, color = "white", background = "red")
                             
 ```
 
-## MC Questions 
+## Percent Correct
 
-Section 1 - MC
-questions down the rows 
-answers down the columns 
-% who chose what 
-% who got correct
+Below is a table that shares the percentage of correct responses across `r nrow(data)` students. Questions are ordered as they appear in the survey and highlighted in red to indicate a percentage less than `r set.cutoff.correct`. 
 
 ```{r}
+#| echo: false
+#| warning: false
 
-data <- read_csv("data/ds-assessment-anonymized-fake-data.csv")
+# another path
+tmp <- MC_questions |>
+  # just showing off with this trick ngl
+  dplyr::select(`Storm Paths`, contains("Realty"), contains("Movie"), contains("Screening"), contains("He Said"), contains("Build"), contains("Website"))
 
-test <- data |>
-  select(`Storm Paths` , `Realty Tree 2/2`) |>
-  slice(-2)
+names(tmp) <- tmp[1,] |> unlist() |> unname()
 
+tmp2 <- tmp |>
+  slice(-c(1:2)) |>
+  mutate(id = 1:n()) |>
+  pivot_longer(1:ncol(tmp), names_to = "question", values_to = "answer") 
 
-names(test) <- test |> 
-  slice(1) |> 
-  unlist() 
+# that structure (tmp2) can be manipulated to build whatever summary you need
+# for example:
 
-test <- test |> 
-  slice(-1)
+#tmp2 |>
+  #group_by(question) |>
+  #count(answer) |>
+  #pivot_wider(names_from = "answer", values_from = "n") 
+  
+# to get percent correct
+# assuming the correct answers are given for each question in a table
+key <- tibble(
+  question = unique(tmp2$question),
+  correct = c( "City a", "Can't be determined from the information given", "$151,424", "Plot A", "Plot D", "Plot D", "Plot B,Plot D", "Horror", "Plot C", "Plot C", "Plot C", "Plot C", "FALSE", "TRUE", "Need additional information to determine this:" , "County boundaries,Number of adults living in each county,Number of unemployed adults living in each county", "Valid", "Cannot determine from this plot", "Cannot determine from this plot")
+)
 
-test[is.na(test)] <- "0"
-
-test |>
-  pivot_longer(1:ncol(test), 
-               names_to = "question",
-               values_to = "answer"
-    
+tbl <- tmp2 |>
+  left_join(
+    key,
+    by = "question"
   ) |>
-  mutate(index = rep(1:2, nrow(test))) |>
-  group_by(question) |>
-  summarize(percent_correct = mean(answer == "City a" | answer == "$151,424" , na.rm = T)) |>
-  kbl()
-    
-    
+  mutate(
+    correct_answer = case_when(
+      answer == correct ~ 1,
+      TRUE ~ 0
+    ),
+    mc_question_num = rep(1:19, 20)
+  ) |> 
+  group_by(question, mc_question_num) %>%
+  summarize(pct_correct = mean(correct_answer)) |>
+  arrange(mc_question_num) |>
+  as.data.frame()
+
+tbl |>
+  kable(booktabs = T) %>%
+  kable_styling() %>%
+  row_spec(which(tbl$pct_correct <=.5), bold = T, color = "white", background = "red")
+```
 
 
+
+```{r}
+#| echo: false
+
+# extract multiple choice question data
+
+MC_questions <- data_question |>
+  select(`Storm Paths`, `Movie Budgets 1_1`, `Movie Budgets 1_2`, `Movie Budgets 1_3`, `Movie Budgets 1_4`, `Movie Budgets 2`, `Disease Screening _1`, `Disease Screening _2`, `Disease Screening _3`, `Disease Screening _4`, `He Said She Said 1/3`, `He Said She Said 2/3` , `He Said She Said 3/3`, `Build-a-Plot`, `Realty Tree 1/2`, `Realty Tree 2/2`, `Website Testing 1/3`, `Website Testing 2/3`, `Website Testing 3/3` )
 
 MC <- data |>
   select(`Storm Paths`, `Movie Budgets 1_1`, `Movie Budgets 1_2`, `Movie Budgets 1_3`, `Movie Budgets 1_4`, `Movie Budgets 2`, `Disease Screening _1`, `Disease Screening _2`, `Disease Screening _3`, `Disease Screening _4`, `He Said She Said 1/3`, `He Said She Said 2/3` , `He Said She Said 3/3`, `Build-a-Plot`, `Realty Tree 1/2`, `Realty Tree 2/2`, `Website Testing 1/3`, `Website Testing 2/3`, `Website Testing 3/3` )
-
 ```
 
+# Storm Paths
+
+**Question**: The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?
+
+```{r}
+#| echo: false
+count_1 <- MC |>
+  select(`Storm Paths`) |>
+  group_by(`Storm Paths`) |>
+  count() |>
+  summarize(pos = max(n) + 1, value = sum(n))
+
+MC |>
+  ggplot(aes(x = `Storm Paths`, fill=`Storm Paths`)) +
+  geom_bar(stat="count", position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_1, aes(y = pos, label = value)) + 
+  scale_fill_manual(values=c("chartreuse2", "firebrick3"), na.value="black")
+```
+
+# Realty Tree 2/2
+
+**Question** A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area. What price would the tree predict for a house with 1200 ft.$^2$ of living area and 1.5 bathrooms?
+```{r}
+#| echo: false
+
+MC$`Realty Tree 2/2` <- fct_expand(MC$`Realty Tree 2/2`, "184,248", "Can't be determined from the information given")
+
+count_2 <- MC |>
+  group_by(`Realty Tree 2/2`) |>
+  pull(`Realty Tree 2/2`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+count_2 |>
+  ggplot(aes(x = `f`, y = value, fill=`f`)) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_2, aes(y = pos, label = value)) + 
+  scale_fill_manual(values=c("chartreuse2", "firebrick3", "firebrick3", "firebrick3"), na.value="black")
+```
 
 
 ## How to make this doc
