@@ -4,32 +4,43 @@ format: html
 editor: visual
 ---
 
-## Packages
+# Packages
 
 ```{r}
 #| warning: false
 #| message: false
 library(tidyverse)
 library(kableExtra)
+library(gridExtra)
 ```
 
-## Data 
+# Data 
+
+The follow data are fake and for demonstration purposes only
 
 ```{r}
 #| warning: false
 #| message: false
-data <- read_csv("data/ds-assessment-anonymized-fake-data.csv") %>% slice(3:nrow(.)) |>
+#| echo: false
+
+# data easier to work with plotting
+data <- read_csv("data/ds-assessment-anonymized-fake-data.csv") %>% slice(3:nrow(.)) %>%
   mutate(`Duration (in seconds)` = as.numeric(`Duration (in seconds)`))
+# all MC questions in survey
+MC <- data |>
+  select(`Storm Paths`, `Movie Budgets 1_1`, `Movie Budgets 1_2`, `Movie Budgets 1_3`, `Movie Budgets 1_4`, `Movie Budgets 2`, `Disease Screening _1`, `Disease Screening _2`, `Disease Screening _3`, `Disease Screening _4`, `He Said She Said 1/3`, `He Said She Said 2/3` , `He Said She Said 3/3`, `Build-a-Plot`, `Realty Tree 1/2`, `Realty Tree 2/2`, `Website Testing 1/3`, `Website Testing 2/3`, `Website Testing 3/3` )
 
-data_question <- read_csv("data/ds-assessment-anonymized-fake-data.csv") %>% replace(is.na(.), "0") #doesn't work with other pipe. Perhaps better way to do this? 
 
-# need these data to have question information
+# data to work make tables
+# has question information
+data_question <- read_csv("data/ds-assessment-anonymized-fake-data.csv") %>% replace(is.na(.), "0")
 
+# all MC questions in survey
 MC_questions <- data_question |>
   select(`Storm Paths`, `Movie Budgets 1_1`, `Movie Budgets 1_2`, `Movie Budgets 1_3`, `Movie Budgets 1_4`, `Movie Budgets 2`, `Disease Screening _1`, `Disease Screening _2`, `Disease Screening _3`, `Disease Screening _4`, `He Said She Said 1/3`, `He Said She Said 2/3` , `He Said She Said 3/3`, `Build-a-Plot`, `Realty Tree 1/2`, `Realty Tree 2/2`, `Website Testing 1/3`, `Website Testing 2/3`, `Website Testing 3/3` )
 ```
 
-## Report 
+# Report
 
 There are `r nrow(data) - 2` participants in our data set. Of the `r nrow(data) - 2` participants, `r sum(data$Finished == TRUE)` made it to the last question of the survey. The average time it took to complete this survey was `r round(mean(data$"Duration (in seconds)", na.rm = T)/60, 2)` minutes, with `r sum((data$"Duration (in seconds)"/60) > 60)` students taking more than 1 hour to complete the assessment, and `r sum((data$"Duration (in seconds)"/60) > 120)` students taking more than 2 hours to complete the assessment.  
 
@@ -76,6 +87,8 @@ percent_missing |>
                             
 ```
 
+# Multiple Choice 
+
 ## Percent Correct
 
 Below is a table that shares the percentage of correct responses across `r nrow(data)` students. Questions are ordered as they appear in the survey and highlighted in red to indicate a percentage less than `r set.cutoff.correct`. 
@@ -121,7 +134,7 @@ tbl <- tmp2 |>
       answer == correct ~ 1,
       TRUE ~ 0
     ),
-    mc_question_num = rep(1:19, 20)
+    mc_question_num = rep(1:19, nrow(data)) #19 = MC Q | last value needs to be sample size
   ) |> 
   group_by(question, mc_question_num) %>%
   summarize(pct_correct = mean(correct_answer)) |>
@@ -134,23 +147,13 @@ tbl |>
   row_spec(which(tbl$pct_correct <=.5), bold = T, color = "white", background = "red")
 ```
 
+## Storm Paths
 
+The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?
 
-```{r}
-#| echo: false
+![](images/storm.png)
 
-# extract multiple choice question data
-
-MC_questions <- data_question |>
-  select(`Storm Paths`, `Movie Budgets 1_1`, `Movie Budgets 1_2`, `Movie Budgets 1_3`, `Movie Budgets 1_4`, `Movie Budgets 2`, `Disease Screening _1`, `Disease Screening _2`, `Disease Screening _3`, `Disease Screening _4`, `He Said She Said 1/3`, `He Said She Said 2/3` , `He Said She Said 3/3`, `Build-a-Plot`, `Realty Tree 1/2`, `Realty Tree 2/2`, `Website Testing 1/3`, `Website Testing 2/3`, `Website Testing 3/3` )
-
-MC <- data |>
-  select(`Storm Paths`, `Movie Budgets 1_1`, `Movie Budgets 1_2`, `Movie Budgets 1_3`, `Movie Budgets 1_4`, `Movie Budgets 2`, `Disease Screening _1`, `Disease Screening _2`, `Disease Screening _3`, `Disease Screening _4`, `He Said She Said 1/3`, `He Said She Said 2/3` , `He Said She Said 3/3`, `Build-a-Plot`, `Realty Tree 1/2`, `Realty Tree 2/2`, `Website Testing 1/3`, `Website Testing 2/3`, `Website Testing 3/3` )
-```
-
-# Storm Paths
-
-**Question**: The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?
+**Question**: Which city is more likely to be hit by the storm?
 
 ```{r}
 #| echo: false
@@ -175,23 +178,136 @@ MC |>
   scale_fill_manual(values=c("chartreuse2", "firebrick3"), na.value="black")
 ```
 
-# Realty Tree 2/2
+# Movie Budgets 
 
-**Question** A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area. What price would the tree predict for a house with 1200 ft.$^2$ of living area and 1.5 bathrooms?
+A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots.
+
+![](images/movie.png)
+
+**Question**: Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.
+
+
+**Note** Answers or combinations of answers that do not appear in the plot were not selected by students.
+
+
+
 ```{r}
 #| echo: false
-
-MC$`Realty Tree 2/2` <- fct_expand(MC$`Realty Tree 2/2`, "184,248", "Can't be determined from the information given")
-
-count_2 <- MC |>
-  group_by(`Realty Tree 2/2`) |>
-  pull(`Realty Tree 2/2`) |>
+#| message: false
+count_movie1 <- MC |>
+  group_by(`Movie Budgets 1_1`) |>
+  pull(`Movie Budgets 1_1`) |>
   fct_count() |>
   group_by(f) |>
   mutate(pos = max(n) + 1, value = sum(n))
 
-count_2 |>
-  ggplot(aes(x = `f`, y = value, fill=`f`)) +
+m1 <- count_movie1 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot A", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    subtitle = "mean",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_movie1, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+
+# movie 2
+
+count_movie2<- MC |>
+  group_by(`Movie Budgets 1_2`) |>
+  pull(`Movie Budgets 1_2`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+m2 <- count_movie2 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot D", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    subtitle = "median",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_movie2, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+
+# movie 3 
+
+count_movie3<- MC |>
+  group_by(`Movie Budgets 1_3`) |>
+  pull(`Movie Budgets 1_3`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+m3 <- count_movie3 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot D", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    subtitle =  "IQR",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_movie3, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+
+count_movie4<- MC |>
+  group_by(`Movie Budgets 1_4`) |>
+  pull(`Movie Budgets 1_4`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+m4 <- count_movie4 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot B,Plot D", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    subtitle = "shape",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_movie4, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+
+grid.arrange(m1, m2, m3, m4, nrow = 2)
+```
+
+
+**Question 2** For each genre, the data scientist also fitted a regression line to model the relationship between movies' budgets and their revenues. A scatterplot of this relationship, along with the fitted regression line, is shown for each of the four genres below. For which genre would the fitted regression model produce the highest $R^2$ value?
+
+![](images/movies2.png)
+
+```{r}
+#| echo: false
+
+MC$`Movie Budgets 2` <- fct_expand(MC$`Movie Budgets 2`, "Action", "Animation", "Drama", "Horror")
+
+count_movie2b <- MC |>
+  group_by(`Movie Budgets 2`) |>
+  pull(`Movie Budgets 2`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+count_movie2b |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Horror", "correct", "not"))) +
   geom_col(position="dodge") +
   labs(
     x = "",
@@ -201,10 +317,426 @@ count_2 |>
   ) +
   theme_classic() +
   theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
-  geom_text(data = count_2, aes(y = pos, label = value)) + 
-  scale_fill_manual(values=c("chartreuse2", "firebrick3", "firebrick3", "firebrick3"), na.value="black")
+  geom_text(data = count_movie2b, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
 ```
 
+# Disease Screening 
+
+COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID.
+
+We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates.
+
+![](images/disease.png)
+
+**Question**: Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.
+
+**Note** Plots or combinations of answers that do not appear in the plot were not selected by students.
+```{r}
+#| echo: false
+#| message: false
+count_disease1<- MC |>
+  group_by(`Disease Screening _1`) |>
+  pull(`Disease Screening _1`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+d1 <- count_disease1 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot C", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    subtitle = "sensitivity",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_disease1, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+
+# disease 2
+
+count_disease2<- MC |>
+  group_by(`Disease Screening _2`) |>
+  pull(`Disease Screening _2`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+d2 <- count_disease2 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot C", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    subtitle = "specificity",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_disease2, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+
+
+count_disease3<- MC |>
+  group_by(`Disease Screening _3`) |>
+  pull(`Disease Screening _3`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+d3 <- count_disease3 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot C", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    subtitle =  "false positive rate",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_disease3, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+
+count_disease4<- MC |>
+  group_by(`Disease Screening _4`) |>
+  pull(`Disease Screening _4`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+d4 <- count_disease4 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot C", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    subtitle = "false negative rate",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_disease4, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+
+grid.arrange(d1, d2, d3, d4, nrow = 2)
+```
+
+# He said she said 
+
+For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
+
+![](images/heshe.png)
+
+**Question**: Men in Austen's novels are more likely to have 'dared', 'expected', and 'ran' than women.
+
+```{r}
+#| echo: false
+
+MC$`He Said She Said 1/3` <- fct_expand(MC$`He Said She Said 1/3`, "TRUE", "FALSE", "Need additional information to determine this:")
+
+count_he1 <- MC |>
+  group_by(`He Said She Said 1/3`) |>
+  pull(`He Said She Said 1/3`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+count_he1 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "FALSE", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_he1, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+```
+
+**Question 2**: Women in Austen's novels are more likely to have 'remembered', 'felt', and 'cried' than men.
+```{r}
+#| echo: false
+
+MC$`He Said She Said 2/3` <- fct_expand(MC$`He Said She Said 2/3`, "TRUE", "FALSE", "Need additional information to determine this:")
+
+count_he2 <- MC |>
+  group_by(`He Said She Said 2/3`) |>
+  pull(`He Said She Said 2/3`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+count_he2 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "TRUE", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_he2, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+```
+
+**Question 3**: Women in Austen's novels are more likely to have 'remembered' than 'feared'.
+
+```{r}
+#| echo: false
+MC$`He Said She Said 3/3` <- fct_expand(MC$`He Said She Said 3/3`, "TRUE", "FALSE", "Need additional information to determine this:")
+
+count_he3 <- MC |>
+  group_by(`He Said She Said 3/3`) |>
+  pull(`He Said She Said 3/3`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+count_he3 |>
+  ggplot(aes(x = fct_inorder(`f`), y = value, fill = ifelse(f == "Need additional information to determine this:", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_he3, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black") 
+```
+
+# Build-a-plot
+
+The following is an intensity map of the unemployment rate among adults in the counties in the United States (based on data from 2019).
+
+![](images/build.png)
+
+**Question**: Indicate which of the following data you need to recreate this map: (Select all that apply.)
+
+**Note** Answers or combinations of answers that do not appear in the plot were not selected by students.
+
+**Axis Key** 
+
+- County boundaries = B
+
+- Number of unemployed adults living in each county = UA
+
+- Unemployment rate in each county = R
+
+- Number of adults living in each county = AL
+
+- Total population of the county = P
+
+```{r}
+#| echo: false
+
+count_build <- MC |>
+  group_by(`Build-a-Plot`) |>
+  pull(`Build-a-Plot`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+
+count_build$f <- str_replace_all(count_build$f, c("County boundaries" = "B", "Number of unemployed adults living in each county" = "UA", "Unemployment rate in each county" = "R", "Number of adults living in each county" = "AL", "Total population of the county" = "P" ))
+
+count_build |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "B,AL,UA", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_build, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+```
+
+
+# Realty Tree 
+
+A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area.
+
+![](images/tree.png)
+
+**Question**: What price would the tree predict for a house with $3200 ft.^2$ of living area, 1.5 bathrooms, and 1 fireplace?
+
+```{r}
+#| echo: false
+
+MC$`Realty Tree 1/2` <- fct_expand(MC$`Realty Tree 1/2`, "$262,972", "$326,267", "$501,876", "Can't be determined from the information given.")
+
+count_tree1 <- MC |>
+  group_by(`Realty Tree 1/2`) |>
+  pull(`Realty Tree 1/2`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+count_tree1 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Can't be determined from the information given.", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_tree1, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+```
+
+
+**Question 2**: What price would the tree predict for a house with $1200 ft.^2$ of living area and 1.5 bathrooms?
+```{r}
+#| echo: false
+
+MC$`Realty Tree 2/2` <- fct_expand(MC$`Realty Tree 2/2`, "184,248", "Can't be determined from the information given")
+
+count_tree2 <- MC |>
+  group_by(`Realty Tree 2/2`) |>
+  pull(`Realty Tree 2/2`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+count_tree2 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "$151,424", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_tree2, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+```
+
+
+# Website Testing 
+
+An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
+
+![](images/website.png)
+
+Indicate whether each of the following conclusions are valid:
+
+**Question**: Over time the company is getting more returning users regardless of the version of the website.
+
+```{r}
+#| echo: false
+
+MC$`Website Testing 1/3` <- fct_expand(MC$`Website Testing 1/3`, "Valid", "Invalid", "Cannot determine from this plot")
+
+count_web1 <- MC |>
+  group_by(`Website Testing 1/3`) |>
+  pull(`Website Testing 1/3`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+count_web1 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Valid", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_web1, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+```
+
+**Question 2**: On the 31st day, the blue version of the website is expected to have higher number of returning users.
+
+```{r}
+#| echo: false
+
+MC$`Website Testing 2/3` <- fct_expand(MC$`Website Testing 2/3`, "Valid", "Invalid", "Cannot determine from this plot")
+
+count_web2 <- MC |>
+  group_by(`Website Testing 2/3`) |>
+  pull(`Website Testing 2/3`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+count_web2 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Cannot determine from this plot", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_web2, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+```
+
+**Question 3**:On the 60th day, the blue version of the website is expected to have higher number of returning users.
+
+```{r}
+#| echo: false
+
+MC$`Website Testing 3/3` <- fct_expand(MC$`Website Testing 3/3`, "Valid", "Invalid", "Cannot determine from this plot")
+
+count_web3 <- MC |>
+  group_by(`Website Testing 3/3`) |>
+  pull(`Website Testing 3/3`) |>
+  fct_count() |>
+  group_by(f) |>
+  mutate(pos = max(n) + 1, value = sum(n))
+
+count_web3 |>
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Cannot determine from this plot", "correct", "not"))) +
+  geom_col(position="dodge") +
+  labs(
+    x = "",
+    y = "Count",
+    title = "Response choice across participants",
+    caption = "Correct answer is green\n Incorrection answer is red"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=45, hjust=1), legend.position = "none") +
+  geom_text(data = count_web3, aes(y = pos, label = value)) + 
+  scale_fill_manual(name = "f", values = c("chartreuse2", "firebrick3"), na.value="black")
+```
+
+## Short answer questions
+
+Section 2 - SA 
+
+Look at creating hisogram of number of words, etc. Some sort of meta data 
+(tidytext package) 
 
 ## How to make this doc
 
@@ -213,14 +745,6 @@ Write report to take data from class
 write code to create the following 
 
 in-line code to summarize high level data (time taken / completed vs not / etc) 
-
-
-## Short answer questions
-
-Section 2 - SA 
-
-Look at creating hisogram of number of words, etc. Some sort of meta data 
-(tidytext package) 
 
 
 
