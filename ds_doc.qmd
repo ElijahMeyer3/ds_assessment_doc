@@ -738,6 +738,9 @@ Section 2 - SA
 Look at creating hisogram of number of words, etc. Some sort of meta data 
 (tidytext package) 
 
+https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html
+
+
 ## How to make this doc
 
 Write report to take data from class 
