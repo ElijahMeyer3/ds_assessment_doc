@@ -12,6 +12,10 @@ editor: visual
 library(tidyverse)
 library(kableExtra)
 library(gridExtra)
+library(janeaustenr)
+library(dplyr)
+library(stringr)
+library(tidytext)
 ```
 
 # Data 
@@ -177,6 +181,49 @@ MC |>
   geom_text(data = count_1, aes(y = pos, label = value)) + 
   scale_fill_manual(values=c("chartreuse2", "firebrick3"), na.value="black")
 ```
+
+### Storm Path short answer 
+
+**Question** Explain: 
+
+```{r}
+#| echo: false
+
+se <- data |>
+  select(`Storm Paths Explana`) |>
+  unnest_tokens(word, `Storm Paths Explana`)
+
+tidy_se <- se |>
+  filter(!word %in% stop_words$word)
+
+num_words <- tidy_se |>
+  mutate(word = factor(word)) |>
+  group_by(word) |>
+  count() |>
+  arrange(desc(n)) |>
+  na.omit() |>
+  data.frame() |>
+  distinct(n) |>
+  head(2) |> #change head to display number of words you want | default to top 2 values not inclusive 
+  pull()
+  
+tidy_se |>
+  mutate(word = factor(word)) |>
+  group_by(word) |>
+  count() |>
+  arrange(desc(n)) |>
+  na.omit() |>
+  data.frame() |>
+  filter(n %in% num_words) |>
+  ggplot(
+    aes(x = fct_inorder(word), y = n)
+  ) +
+  geom_col() + 
+  labs(title = "Count of words" , 
+       x = "Words")
+```
+
+
 
 # Movie Budgets 
 
