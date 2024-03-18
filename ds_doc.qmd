@@ -20,7 +20,7 @@ library(tidytext)
 
 # Data 
 
-The follow data are fake and for demonstration purposes only
+The following data are fake and for demonstration purposes only
 
 ```{r}
 #| warning: false
@@ -46,7 +46,7 @@ MC_questions <- data_question |>
 
 # Report
 
-There are `r nrow(data) - 2` participants in our data set. Of the `r nrow(data) - 2` participants, `r sum(data$Finished == TRUE)` made it to the last question of the survey. The average time it took to complete this survey was `r round(mean(data$"Duration (in seconds)", na.rm = T)/60, 2)` minutes, with `r sum((data$"Duration (in seconds)"/60) > 60)` students taking more than 1 hour to complete the assessment, and `r sum((data$"Duration (in seconds)"/60) > 120)` students taking more than 2 hours to complete the assessment.  
+There are `r nrow(data) - 2` participants in our data set. Of the `r nrow(data) - 2` participants, `r sum(data$Finished == TRUE)` made it to the last question of the survey. The average time it took to complete this survey was `r round(mean(data$"Duration (in seconds)", na.rm = T)/60, 2)` minutes, with `r sum((data$"Duration (in seconds)"/60) > 60)` students taking more than 60 minutes to complete the assessment, and `r sum((data$"Duration (in seconds)"/60) > 120)` students taking more than 120 minutes to complete the assessment.  
 
 
 ```{r}
@@ -125,7 +125,7 @@ tmp2 <- tmp |>
 # assuming the correct answers are given for each question in a table
 key <- tibble(
   question = unique(tmp2$question),
-  correct = c( "City a", "Can't be determined from the information given", "$151,424", "Plot A", "Plot D", "Plot D", "Plot B,Plot D", "Horror", "Plot C", "Plot C", "Plot C", "Plot C", "FALSE", "TRUE", "Need additional information to determine this:" , "County boundaries,Number of adults living in each county,Number of unemployed adults living in each county", "Valid", "Cannot determine from this plot", "Cannot determine from this plot")
+  correct = c( "City a", "Can't be determined from the information given", "$151,424", "Plot A", "Plot D", "Plot D", "Plot B,Plot D", "Horror", "Plot B", "Plot C", "Plot B", "Plot B", "FALSE", "TRUE", "Need additional information to determine this:" , "County boundaries,Number of adults living in each county,Number of unemployed adults living in each county", "Valid", "Cannot determine from this plot", "Cannot determine from this plot")
 )
 
 tbl <- tmp2 |>
@@ -390,7 +390,7 @@ count_disease1<- MC |>
   mutate(pos = max(n) + 1, value = sum(n))
 
 d1 <- count_disease1 |>
-  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot C", "correct", "not"))) +
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot B", "correct", "not"))) +
   geom_col(position="dodge") +
   labs(
     x = "",
@@ -437,7 +437,7 @@ count_disease3<- MC |>
   mutate(pos = max(n) + 1, value = sum(n))
 
 d3 <- count_disease3 |>
-  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot C", "correct", "not"))) +
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot B", "correct", "not"))) +
   geom_col(position="dodge") +
   labs(
     x = "",
@@ -459,7 +459,7 @@ count_disease4<- MC |>
   mutate(pos = max(n) + 1, value = sum(n))
 
 d4 <- count_disease4 |>
-  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot C", "correct", "not"))) +
+  ggplot(aes(x = `f`, y = value, fill = ifelse(f == "Plot B", "correct", "not"))) +
   geom_col(position="dodge") +
   labs(
     x = "",
@@ -782,19 +782,11 @@ count_web3 |>
 
 Section 2 - SA 
 
-Look at creating hisogram of number of words, etc. Some sort of meta data 
-(tidytext package) 
+Look at creating histogram of number of words, etc. 
 
 https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html
 
 
-## How to make this doc
-
-Write report to take data from class 
-
-write code to create the following 
-
-in-line code to summarize high level data (time taken / completed vs not / etc) 
 
 
 
