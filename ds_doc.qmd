@@ -54,12 +54,18 @@ There are `r nrow(data) - 2` participants in our data set. Of the `r nrow(data) 
 
 att <- data |>
   select(contains("Attention")) |>
-  filter(`Attention Check 1/2` == "I am passing this attention check",
-        `Attention Check 2/2` == "$262,972") |>
+  mutate(`Attention Check 1/2` = replace_na(`Attention Check 1/2`, "0"),
+        `Attention Check 2/2` = replace_na(`Attention Check 2/2`, "0")) |>
+  filter(`Attention Check 1/2` != "I am passing this attention check" | 
+         `Attention Check 2/2` != "$262,972") |>
+  nrow()
+
+fast <- data |>
+  filter(`Duration (in seconds)` <= 600) |>
   nrow()
 ```
 
-`r att` students correctly passed both attention checks in the survey. 
+`r att` students failed at least one of the attention checks in the survey. `r fast` students completed the assessment in 10 minutes or less.
 
 ## Missing observations 
 

@@ -48,7 +48,23 @@ MC_questions <- data_question |>
 
 # Report
 
-There are `r nrow(data) - 2` participants in our data set. Of the `r nrow(data) - 2` participants, `r sum(data$Finished == TRUE)` made it to the last question of the survey. The average time it took to complete this survey was `r round(mean(data$"Duration (in seconds)", na.rm = T)/60, 2)` minutes, with `r sum((data$"Duration (in seconds)"/60) > 60)` students taking more than 60 minutes to complete the assessment, and `r sum((data$"Duration (in seconds)"/60) > 120)` students taking more than 120 minutes to complete the assessment.  
+There are `r nrow(data) - 2` participants in our data set. Of the `r nrow(data) - 2` participants, `r sum(data$Finished == TRUE)` made it to the last question of the survey. The average time it took to complete this survey was `r round(mean(data$"Duration (in seconds)", na.rm = T)/60, 2)` minutes, with `r sum((data$"Duration (in seconds)"/60) > 60)` students taking more than 60 minutes to complete the assessment, and `r sum((data$"Duration (in seconds)"/60) > 120)` students taking more than 120 minutes to complete the assessment. 
+
+```{r}
+#| echo: false
+
+data |> 
+  ggplot(
+    aes(x = `Duration (in seconds)` / 60)
+  ) +
+  geom_density() +  
+  theme_classic() + 
+  labs( 
+    x = "minutes spent",
+    y = "",
+    title = "density of time spent")
+```
+
 
 
 ```{r}
@@ -194,9 +210,10 @@ s1 <- data |>
 color.me.storm <- which(s1$`Storm Paths` == "City a")
 
 s1 %>% 
-  kable(booktabs = T) %>%
+  kable(booktabs = T , caption = "Table without NAs") %>%
   kable_styling() %>%
-  row_spec(color.me.storm, bold = T, color = "white", background = "green")
+  row_spec(color.me.storm, bold = T, color = "white", background = "green") 
+  
 
 s2 <- data |>
   select(`Storm Paths`) |>
@@ -204,9 +221,10 @@ s2 <- data |>
   mutate(prop = n/sum(n)) 
 
 s2 |>
-  kable(booktabs = T) %>%
+  kable(booktabs = T, caption = "Table with NAs") %>%
   kable_styling() %>%
   row_spec(color.me.storm, bold = T, color = "white", background = "green")
   
 ```
+
 
