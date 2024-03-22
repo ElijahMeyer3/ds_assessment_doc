@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.530">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ds assessment report</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="ds_report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="ds_report_files/libs/quarto-html/quarto.js"></script>
+<script src="ds_report_files/libs/quarto-html/popper.min.js"></script>
+<script src="ds_report_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="ds_report_files/libs/quarto-html/anchor.min.js"></script>
+<link href="ds_report_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="ds_report_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="ds_report_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="ds_report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="ds_report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="ds_report_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="ds_report_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">ds assessment report</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janeaustenr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="data" class="level1">
+<h1>Data</h1>
+<p>There are 21 participants in our data set. Of the 21 participants, 10 made it to the last question of the survey. The average time it took to complete this survey was 429.3 minutes, with 2 students taking more than 60 minutes to complete the assessment, and 2 students taking more than 120 minutes to complete the assessment.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Missing observations
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Below are the percentages of missing observations by question. Questions that have at least 0.8 percent missing are highlighted in red.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">percent_missing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">storm_paths</td>
+<td style="text-align: right;">0.6086957</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">storm_paths_explana</td>
+<td style="text-align: right;">0.6086957</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">movie_budgets_1_1</td>
+<td style="text-align: right;">0.6956522</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">movie_budgets_1_2</td>
+<td style="text-align: right;">0.6956522</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">movie_budgets_1_3</td>
+<td style="text-align: right;">0.6956522</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">movie_budgets_1_4</td>
+<td style="text-align: right;">0.6956522</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">movie_budgets_2</td>
+<td style="text-align: right;">0.6086957</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">application_screenin</td>
+<td style="text-align: right;">0.6521739</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">banana_conclusions</td>
+<td style="text-align: right;">0.6956522</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">covid_map_1_2</td>
+<td style="text-align: right;">0.6956522</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">covid_map_2_2</td>
+<td style="text-align: right;">0.6956522</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">attention_check_1_2</td>
+<td style="text-align: right;">0.6956522</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">disease_screening_1</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">disease_screening_2</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">disease_screening_3</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">disease_screening_4</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">he_said_she_said_1_3</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">he_said_she_said_1_3_3_text</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.9130435</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">he_said_she_said_2_3</td>
+<td style="text-align: right;">0.6956522</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">he_said_she_said_2_3_3_text</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.9130435</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">he_said_she_said_3_3</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">he_said_she_said_3_3_3_text</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.9130435</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">build_a_plot</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">realty_tree_1_2</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">attention_check_2_2</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">realty_tree_2_2</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">website_testing_1_3</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">website_testing_2_3</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">website_testing_3_3</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">image_recognition1_1</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">data_confidentiali1_1</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">activity_journal_1_1</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">movie_wrangling_1_6</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">movie_wrangling_2_6</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">movie_wrangling_3_6</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">movie_wrangling_4_6</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">movie_wrangling_5_6</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">movie_wrangling_6_6</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">time_spent</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">consent</td>
+<td style="text-align: right;">0.7391304</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Percent correct - multiple choice
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Below is a table that shares the percentage of correct responses across students. Questions are ordered as they appear in the survey and highlighted in red to indicate a percentage less than 0.5.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'question'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">question</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mc_question_num</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pct_correct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - IQR</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">6</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.1739130</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - Mean</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">4</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.1739130</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - Median</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">5</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.1739130</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">1</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.1739130</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area. What price would the tree predict for a house with 1200 ft.$^2$ of living area and 1.5 bathrooms?</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">3</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.1304348</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">For each genre, the data scientist also fitted a regression line to model the relationship between movies' budgets and their revenues. A scatterplot of this relationship, along with the fitted regression line, is shown for each of the four genres below. For which genre would the fitted regression model produce the highest $R^2$ value?</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">8</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.1304348</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website. Indicate whether each of the following conclusions are valid: On the 60th day, the blue version of the website is expected to have higher number of returning users.</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">18</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0869565</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.​​​​​​​ - Shape</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">7</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0434783</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website. Indicate whether each of the following conclusions are valid: On the 31st day, the blue version of the website is expected to have higher number of returning users.</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">17</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0434783</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID. We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - Sensitivity</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">12</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0434783</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area. What price would the tree predict for a house with 3200 ft.$^2$ of living area, 1.5 bathrooms, and 1 fireplace?</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">2</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website. Indicate whether each of the following conclusions are valid: Over time the company is getting more returning users regardless of the version of the website.</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">16</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID. We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - False negative rate</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">15</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID. We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - False positive rate</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">14</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">COVID screening tests are not 100% accurate. It's possible to have COVID but not test positive or not have COVID but test positive for it. The following three visualizations display the outcomes of a COVID screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID. We are also interested in the false positive (individuals classified as with COVID, who don't actually have it) and false negative (individuals classified as without COVID, but who do actually have it) rates. Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots. - Specificity</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">13</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need. Men in Austen's novels are more likely to have 'dared', 'expected', and 'ran' than women. - Selected Choice</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">9</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need. Women in Austen's novels are more likely to have 'remembered' than 'feared'. - Selected Choice</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">11</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need. Women in Austen's novels are more likely to have 'remembered', 'felt', and 'cried' than men. - Selected Choice</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">10</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: tomato !important;">The following is an intensity map of the unemployment rate among adults in the counties in the United States (based on data from 2019). Indicate which of the following data you need to recreate this map: (Select all that apply.)</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">19</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: tomato !important;">0.0000000</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ds_report_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>17 students failed at least one of the attention checks in the survey. 7 students completed the assessment in 5 minutes or less. These data have been filtered out for this report.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>assessment_clean <span class="ot">&lt;-</span> assessment <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(attention_check_1_2 <span class="sc">==</span> <span class="st">"I am passing this attention check"</span> <span class="sc">&amp;</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>         attention_check_2_2 <span class="sc">==</span> <span class="st">"$262,972"</span> <span class="sc">&amp;</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>         duration_in_seconds <span class="sc">&lt;=</span> <span class="dv">300</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>note to self</strong> change data set to assessment_clean below when creaing real report</p>
+<section id="storm-paths" class="level2">
+<h2 class="anchored" data-anchor-id="storm-paths">Storm Paths</h2>
+<p>The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?</p>
+<p><img src="images/storm.png" class="img-fluid"></p>
+<p><strong>Question</strong>: Which city is more likely to be hit by the storm?</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table without NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">storm_paths</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">City a</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">4</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.57</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City b</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.43</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table with NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">storm_paths</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">City a</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">4</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.19</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City b</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0.67</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Raw responses
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">storm_paths</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">storm_paths_explana</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">City a</td>
+<td style="text-align: left;">More of the paths pass by/through A than B</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City a</td>
+<td style="text-align: left;">it sits in-between a larger number of the paths</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">City a</td>
+<td style="text-align: left;">There are more simulated storm lines near City a. Therfore, I think that City a is more likely to be hit by the storm.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City a</td>
+<td style="text-align: left;">There are a lot more lines close to a, and the storm is not guarenteed to follow one of these lines. It is a higher chance of going through a.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">City b</td>
+<td style="text-align: left;">B is directly in one of the paths. A is in the middle of many, but does not find itself directly on any.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City b</td>
+<td style="text-align: left;">It is on a path, whereas A is not</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">City b</td>
+<td style="text-align: left;">I see one line going through it so I think it will hit that</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

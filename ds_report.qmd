@@ -1,0 +1,224 @@
+---
+title: "ds assessment report"
+format: html
+editor: visual
+---
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(janitor)
+library(kableExtra)
+library(gridExtra)
+library(janeaustenr)
+library(dplyr)
+library(stringr)
+library(tidytext)
+library(magrittr)
+library(DT)
+```
+
+# Data
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+# data with question information
+assessment <- read_csv("data/ds-assessment-anonymized-fake-data.csv") |>
+  janitor::clean_names() |>
+  mutate(
+    progress = as.numeric(progress),
+    duration_in_seconds = as.numeric(duration_in_seconds),
+    finished = as.logical(finished),
+    #he_said_she_said_1_3 = as.logical(he_said_she_said_1_3),
+    #he_said_she_said_2_3 = as.logical(he_said_she_said_2_3),
+    #he_said_she_said_3_3 = as.logical(he_said_she_said_3_3),
+    )
+
+
+mc <- assessment |> 
+  dplyr::select(storm_paths, contains("realty"), contains("movie_budget"), he_said_she_said_1_3, he_said_she_said_2_3, he_said_she_said_3_3, contains("screening"), contains("website"), contains("build"))
+```
+
+There are `r nrow(assessment) - 2` participants in our data set. Of the `r nrow(assessment) - 2` participants, `r sum(assessment$finished, na.rm = T)` made it to the last question of the survey. The average time it took to complete this survey was `r round(mean(assessment$duration_in_seconds, na.rm = T)/60, 2)` minutes, with `r sum(assessment$duration_in_seconds/60 > 60, na.rm = T)` students taking more than 60 minutes to complete the assessment, and `r sum(assessment$duration_in_seconds/60 > 120, na.rm = T)` students taking more than 120 minutes to complete the assessment. 
+
+::: {.callout-caution collapse="true"}
+## Missing observations
+
+```{r}
+#| echo: false
+set.cutoff <- .8
+set.cutoff.correct <- .5
+```
+ 
+Below are the percentages of missing observations by question. Questions that have at least `r set.cutoff` percent missing are highlighted in red. 
+
+```{r}
+#| echo: false
+percent_missing <- colSums(
+  is.na(
+    assessment |>
+      slice(-c(1:2)) |>
+      select(17:ncol(assessment)) 
+  )) / nrow(assessment)
+
+percent_missing <- as.data.frame(percent_missing)
+
+color.me <- which(percent_missing >=set.cutoff) # set cut off to highlight table
+
+percent_missing |>
+  data.frame() |>
+  kable(booktabs = T) %>%
+  kable_styling() %>%
+  row_spec(color.me, bold = T, color = "white", background = "tomato")
+```
+:::
+
+::: {.callout-caution collapse="true"}
+## Percent correct - multiple choice
+
+Below is a table that shares the percentage of correct responses across `r nrow(data)` students. Questions are ordered as they appear in the survey and highlighted in red to indicate a percentage less than `r set.cutoff.correct`.
+
+```{r}
+#| echo: false
+
+names(mc) <- mc[1,] |> unlist() |> unname() #put question as name
+
+mc2 <- mc |>
+  mutate(id = 1:n()) |>
+  pivot_longer(1:ncol(mc), names_to = "question", values_to = "answer")
+
+key <- tibble(
+  question = unique(mc2$question),
+  correct = c( "City a", "Can't be determined from the information given", "$151,424", "Plot A", "Plot D", "Plot D", "Plot B,Plot D", "Horror", "Plot B", "Plot C", "Plot B", "Plot B", "FALSE", "TRUE", "Need additional information to determine this:" , "County boundaries,Number of adults living in each county,Number of unemployed adults living in each county", "Valid", "Cannot determine from this plot", "Cannot determine from this plot")
+)
+
+tbl <- mc2 |>
+  left_join(
+    key,
+    by = "question"
+  ) |>
+  mutate(
+    correct_answer = case_when(
+      answer == correct ~ 1,
+      TRUE ~ 0
+    ),
+    mc_question_num = rep(1:19, nrow(assessment)) #19 = MC Q | last value needs to be sample size
+  ) |> 
+  group_by(question, mc_question_num) %>%
+  summarize(pct_correct = mean(correct_answer)) |>
+  arrange(desc(pct_correct)) |>
+  as.data.frame()
+
+tbl |>
+  arrange(desc(pct_correct)) |>
+  kbl() |>
+  kable_styling() |>
+  row_spec(which(tbl$pct_correct <=.5), bold = T, color = "white", background = "tomato")
+
+```
+:::
+
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  ggplot(
+    aes(x = duration_in_seconds / 60)
+  ) +
+  geom_density() +  
+  theme_classic() + 
+  labs( 
+    x = "minutes spent",
+    y = "",
+    title = "density of time spent")
+```
+
+
+```{r}
+#| echo: false
+
+pass <- assessment |>
+  select(contains("attention")) |>
+  slice(-c(1:2)) |>
+  filter(attention_check_1_2 == "I am passing this attention check" & 
+         attention_check_2_2 == "$262,972") |>
+  nrow()
+
+fast <- assessment |>
+  filter(duration_in_seconds <= 300) |>
+  nrow()
+```
+
+`r (nrow(assessment) - 2) - pass` students failed at least one of the attention checks in the survey. `r fast` students completed the assessment in 5 minutes or less. These data have been filtered out for this report. 
+
+```{r}
+
+assessment_clean <- assessment |>
+  slice(-c(1:2)) |>
+  filter(attention_check_1_2 == "I am passing this attention check" & 
+         attention_check_2_2 == "$262,972" & 
+         duration_in_seconds <= 300) 
+```
+
+
+**note to self** change data set to assessment_clean below when creaing real report
+
+## Storm Paths
+
+The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?
+
+![](images/storm.png)
+
+**Question**: Which city is more likely to be hit by the storm?
+
+```{r}
+#| echo: false
+s1 <- assessment |>
+  slice(-c(1:2)) |>
+  select(storm_paths) |>
+  na.omit() |>
+  count(storm_paths) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.storm <- which(s1$storm_paths == "City a")
+
+s1 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.storm, bold = T, color = "white", background = "green") 
+  
+
+s2 <- assessment |>
+  slice(-c(1:2)) |>
+  select(storm_paths) |>
+  count(storm_paths) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s2 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.storm, bold = T, color = "white", background = "green")
+  
+```
+
+
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(storm_paths, storm_paths_explana) |>
+  filter(is.na(storm_paths) != T & is.na(storm_paths_explana) != T) |>
+  arrange(storm_paths) |>
+  kbl() |>
+  kable_styling()
+```
+:::
