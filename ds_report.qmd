@@ -170,7 +170,7 @@ assessment_clean <- assessment |>
 
 **note to self** change data set to assessment_clean below when creaing real report
 
-## Storm Paths
+## Storm paths
 
 The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?
 
@@ -225,7 +225,7 @@ assessment |>
 ```
 :::
 
-## Movie Budgets 
+## Movie budgets 
 
 A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots.
 
@@ -366,3 +366,41 @@ s10 |>
   row_spec(color.me.movie4, bold = T, color = "white", background = "green")
   
 ```
+
+## Movie bugets 2
+
+**Question**: For each genre, the data scientist also fitted a regression line to model the relationship between movies' budgets and their revenues. A scatterplot of this relationship, along with the fitted regression line, is shown for each of the four genres below. For which genre would the fitted regression model produce the highest $R^2$ value?
+
+![](images/movies2.png)
+
+```{r}
+#| echo: false
+s11 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_budgets_2) |>
+  na.omit() |>
+  count(movie_budgets_2) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.movie5 <- which(s11$movie_budgets_2 == "Horror")
+
+s11 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.movie5, bold = T, color = "white", background = "green") 
+  
+
+s12 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_budgets_2) |>
+  count(movie_budgets_2) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s12 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.movie5, bold = T, color = "white", background = "green")
+  
+```
+

@@ -70,6 +70,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="ds_report_files/libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="ds_report_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -452,7 +481,7 @@ Percent correct - multiple choice
 </div>
 <p><strong>note to self</strong> change data set to assessment_clean below when creaing real report</p>
 <section id="storm-paths" class="level2">
-<h2 class="anchored" data-anchor-id="storm-paths">Storm Paths</h2>
+<h2 class="anchored" data-anchor-id="storm-paths">Storm paths</h2>
 <p>The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?</p>
 <p><img src="images/storm.png" class="img-fluid"></p>
 <p><strong>Question</strong>: Which city is more likely to be hit by the storm?</p>
@@ -579,7 +608,7 @@ Raw responses
 </section>
 </section>
 <section id="movie-budgets" class="level2">
-<h2 class="anchored" data-anchor-id="movie-budgets">Movie Budgets</h2>
+<h2 class="anchored" data-anchor-id="movie-budgets">Movie budgets</h2>
 <p>A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres—Horror, Drama, Action, and Animation. To do this, they create the following plots.</p>
 <p><img src="images/movie.png" class="img-fluid"></p>
 <p><strong>Question</strong>: Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.</p>
@@ -851,6 +880,80 @@ Raw responses
 </div>
 </div>
 </section>
+</section>
+<section id="movie-bugets-2" class="level2">
+<h2 class="anchored" data-anchor-id="movie-bugets-2">Movie bugets 2</h2>
+<p><strong>Question</strong>: For each genre, the data scientist also fitted a regression line to model the relationship between movies’ budgets and their revenues. A scatterplot of this relationship, along with the fitted regression line, is shown for each of the four genres below. For which genre would the fitted regression model produce the highest <span class="math inline">\(R^2\)</span> value?</p>
+<p><img src="images/movies2.png" class="img-fluid"></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table without NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">movie_budgets_2</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Action</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.29</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Animation</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.29</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">Horror</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">3</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.43</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table with NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">movie_budgets_2</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Action</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Animation</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">Horror</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">3</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0.67</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
 </section>
 </section>
 
