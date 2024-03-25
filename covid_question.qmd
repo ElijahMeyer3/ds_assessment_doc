@@ -1,0 +1,111 @@
+---
+title: "ds assessment question"
+format: html
+editor: visual
+---
+
+## Packages
+
+```{r}
+library(tidyverse)
+library(colorblindr)
+library(ggmosaic)
+library(patchwork)
+```
+
+
+## Disease Screening {#sec-disease-screening}
+
+Medical screening tests are not 100% accurate. It's possible to have a disease but not test positive or not have a disease but test positive for it. The following three visualizations display the outcomes of a medical screening test with a sensitivity (true positive rate) of 98.1% and specificity (true negative rate) of 99.6% in a population where 5% of the individuals have COVID.
+
+We are also interested in the false positive (individuals classified as with a disease, who don't actually have it) and false negative (individuals classified as without a disease, but who do actually have it) rates.
+
+```{r}
+#| fig-asp: 0.3
+# https://www.fda.gov/medical-devices/coronavirus-disease-2019-covid-19-emergency-use-authorizations-medical-devices/eua-authorized-serology-test-performance
+# IgG 	Sensitivity (PPA) 	98.1% (51/52) 	(89.9%; 99.7%)
+# IgG 	Specificity (NPA) 	99.6% (2000/2008) 	(99.2%; 99.8%)
+
+sensitivity <- 0.782 #was .981 
+specificity <- 0.796 #was .996
+n_disease <- 4000 #was 1000
+n_no_disease <- 15000 #was 19000
+n_disease_positive <- n_disease * sensitivity
+n_disease_negative <- n_disease - n_disease_positive
+n_no_disease_negative <- n_no_disease * specificity
+n_no_disease_positive <- n_no_disease - n_no_disease_negative
+
+
+disease_status <- c(rep("Disease", n_disease), rep("No disease", n_no_disease))
+test_outcome <- c(
+  rep("Positive", n_disease_positive), rep("Negative", n_disease_negative),
+  rep("Positive", n_no_disease_positive), rep("Negative", n_no_disease_negative)
+)
+population <- tibble(disease_status = disease_status, test_outcome = test_outcome)
+
+p1 <- ggplot(population, aes(x = disease_status, fill = test_outcome)) +
+  geom_bar(colour = "black" , lwd = 1) +
+  scale_fill_OkabeIto() +
+  theme_minimal() +
+  labs(x = "Truth", y = "Count", fill = "Test\noutcome")
+
+p1
+
+p2 <- ggplot(population, aes(x = disease_status, fill = test_outcome)) +
+  geom_bar(position = "fill", color = "black", lwd = 1) +
+  scale_fill_OkabeIto() +
+  theme_minimal() +
+  labs(x = "Truth", y = "Proportion", fill = "Test\noutcome")
+
+p2
+
+p3 <- ggplot(data = population) +
+  geom_mosaic( offset = 0.02,
+              color = "black" , lwd = 1,
+    aes(x = product(disease_status), fill = test_outcome),
+    show.legend = FALSE
+  ) +
+  theme_mosaic() +
+  scale_fill_OkabeIto() +
+  labs(x = "Truth", y = "Test outcome")
+
+p3
+
+(p1 + p2 / p3) +
+  plot_layout(guides = "collect") +
+  plot_annotation(tag_levels = "A")
+```
+
+Fill in the following table by placing a check mark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.
+
+::: {.content-visible when-format="pdf"}
+
++-----------------------+------------+------------+------------+
+|                       | Plot A     | Plot B     | Plot C     |
++=======================+============+============+============+
+| Sensitivity           | [ ]        | [ ]        | [ ]        |
++-----------------------+------------+------------+------------+
+| Specificity           | [ ]        | [ ]        | [ ]        |
++-----------------------+------------+------------+------------+
+| False positive rate   | [ ]        | [ ]        | [ ]        |
++-----------------------+------------+------------+------------+
+| False negative rate   | [ ]        | [ ]        | [ ]        |
++-----------------------+------------+------------+------------+
+
+:::
+
+::: {.content-visible when-format="html"}
+
++-----------------------+------------+------------+------------+
+|                       | Plot A     | Plot B     | Plot C     |
++=======================+============+============+============+
+| Sensitivity           | &#9744;    | &#9744;    | &#9744;    |
++-----------------------+------------+------------+------------+
+| Specificity           | &#9744;    | &#9744;    | &#9744;    |
++-----------------------+------------+------------+------------+
+| False positive rate   | &#9744;    | &#9744;    | &#9744;    |
++-----------------------+------------+------------+------------+
+| False negative rate   | &#9744;    | &#9744;    | &#9744;    |
++-----------------------+------------+------------+------------+
+
+:::
