@@ -84,6 +84,8 @@ Below is a table that shares the percentage of correct responses across `r nrow(
 
 ```{r}
 #| echo: false
+#| message: false
+#| warning: false
 
 names(mc) <- mc[1,] |> unlist() |> unname() #put question as name
 
@@ -207,7 +209,7 @@ s2 |>
   
 ```
 
-
+#### Explain
 ::: {.callout-caution collapse="true"}
 ## Raw responses
 
@@ -222,3 +224,145 @@ assessment |>
   kable_styling()
 ```
 :::
+
+## Movie Budgets 
+
+A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots.
+
+![](images/movie.png)
+
+**Question**: Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.
+
+#### Mean
+
+```{r}
+#| echo: false
+s3 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_budgets_1_1) |>
+  na.omit() |>
+  count(movie_budgets_1_1) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.movie <- which(s3$movie_budgets_1_1 == "Plot A")
+
+s3 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.movie, bold = T, color = "white", background = "green") 
+  
+
+s4 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_budgets_1_1) |>
+  count(movie_budgets_1_1) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s4 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.movie, bold = T, color = "white", background = "green")
+  
+```
+
+#### Median 
+
+```{r}
+#| echo: false
+s5 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_budgets_1_2) |>
+  na.omit() |>
+  count(movie_budgets_1_2) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.movie2 <- which(s5$movie_budgets_1_2 == "Plot D")
+
+s5 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.movie2, bold = T, color = "white", background = "green") 
+  
+
+s6 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_budgets_1_2) |>
+  count(movie_budgets_1_2) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s6 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.movie2, bold = T, color = "white", background = "green")
+  
+```
+
+
+#### IQR 
+
+```{r}
+#| echo: false
+s7 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_budgets_1_3) |>
+  na.omit() |>
+  count(movie_budgets_1_3) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.movie3 <- which(s7$movie_budgets_1_3 == "Plot D")
+
+s7 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.movie2, bold = T, color = "white", background = "green") 
+  
+
+s8 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_budgets_1_3) |>
+  count(movie_budgets_1_3) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s8 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.movie2, bold = T, color = "white", background = "green")
+  
+```
+
+
+#### Shape
+
+```{r}
+#| echo: false
+s9 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_budgets_1_4) |>
+  na.omit() |>
+  count(movie_budgets_1_4) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.movie4 <- which(s9$movie_budgets_1_4 == "Plot B,Plot D")
+
+s9 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.movie4, bold = T, color = "white", background = "green") 
+  
+
+s10 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_budgets_1_4) |>
+  count(movie_budgets_1_4) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s10 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.movie4, bold = T, color = "white", background = "green")
+  
+```

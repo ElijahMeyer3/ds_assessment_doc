@@ -319,10 +319,6 @@ Percent correct - multiple choice
 <div class="callout-body-container callout-body">
 <p>Below is a table that shares the percentage of correct responses across students. Questions are ordered as they appear in the survey and highlighted in red to indicate a percentage less than 0.5.</p>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'question'. You can override using the
-`.groups` argument.</code></pre>
-</div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
@@ -448,11 +444,11 @@ Percent correct - multiple choice
 </div>
 <p>17 students failed at least one of the attention checks in the survey. 7 students completed the assessment in 5 minutes or less. These data have been filtered out for this report.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>assessment_clean <span class="ot">&lt;-</span> assessment <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(attention_check_1_2 <span class="sc">==</span> <span class="st">"I am passing this attention check"</span> <span class="sc">&amp;</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>         attention_check_2_2 <span class="sc">==</span> <span class="st">"$262,972"</span> <span class="sc">&amp;</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>         duration_in_seconds <span class="sc">&lt;=</span> <span class="dv">300</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>assessment_clean <span class="ot">&lt;-</span> assessment <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(attention_check_1_2 <span class="sc">==</span> <span class="st">"I am passing this attention check"</span> <span class="sc">&amp;</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>         attention_check_2_2 <span class="sc">==</span> <span class="st">"$262,972"</span> <span class="sc">&amp;</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>         duration_in_seconds <span class="sc">&lt;=</span> <span class="dv">300</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>note to self</strong> change data set to assessment_clean below when creaing real report</p>
 <section id="storm-paths" class="level2">
@@ -519,6 +515,8 @@ Percent correct - multiple choice
 
 </div>
 </div>
+<section id="explain" class="level4">
+<h4 class="anchored" data-anchor-id="explain">Explain</h4>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -578,6 +576,281 @@ Raw responses
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="movie-budgets" class="level2">
+<h2 class="anchored" data-anchor-id="movie-budgets">Movie Budgets</h2>
+<p>A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres—Horror, Drama, Action, and Animation. To do this, they create the following plots.</p>
+<p><img src="images/movie.png" class="img-fluid"></p>
+<p><strong>Question</strong>: Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.</p>
+<section id="mean" class="level4">
+<h4 class="anchored" data-anchor-id="mean">Mean</h4>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table without NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">movie_budgets_1_1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">Plot A</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">4</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Plot A,Plot B</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table with NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">movie_budgets_1_1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">Plot A</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">4</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.19</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Plot A,Plot B</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0.76</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="median" class="level4">
+<h4 class="anchored" data-anchor-id="median">Median</h4>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table without NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">movie_budgets_1_2</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Plot C</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">Plot D</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">4</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.8</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table with NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">movie_budgets_1_2</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Plot C</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">Plot D</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">4</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0.76</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="iqr" class="level4">
+<h4 class="anchored" data-anchor-id="iqr">IQR</h4>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table without NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">movie_budgets_1_3</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Plot C</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">Plot D</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">4</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.8</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table with NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">movie_budgets_1_3</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Plot C</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">Plot D</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">4</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0.76</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="shape" class="level4">
+<h4 class="anchored" data-anchor-id="shape">Shape</h4>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table without NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">movie_budgets_1_4</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Plot A,Plot D</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Plot B</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Plot B,Plot C,Plot D</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">Plot B,Plot D</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">1</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.2</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table with NAs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">movie_budgets_1_4</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Plot A,Plot D</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Plot B</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Plot B,Plot C,Plot D</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">Plot B,Plot D</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">1</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.05</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0.76</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
 </section>
 </section>
 
