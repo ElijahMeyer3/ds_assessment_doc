@@ -2,6 +2,7 @@
 title: "ds assessment report"
 format: html
 editor: visual
+toc: TRUE
 ---
 
 ```{r}
@@ -209,9 +210,19 @@ s2 |>
   
 ```
 
-#### Explain
+### Explain
 ::: {.callout-caution collapse="true"}
 ## Raw responses
+
+```{r}
+#| echo: false
+na_storm <- assessment |>
+  slice(-c(1:2)) |>
+  select(storm_paths_explana) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_storm` missing observations for this question. Complete responses can be seen below.
 
 ```{r}
 #| echo: false
@@ -233,7 +244,9 @@ A data scientist at IMDb has been given a dataset comprised of the revenues and 
 
 **Question**: Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.
 
-#### Mean
+**Note**: Combinations of answers that do not appear in the table were not selected by students.
+
+### Mean
 
 ```{r}
 #| echo: false
@@ -266,7 +279,7 @@ s4 |>
   
 ```
 
-#### Median 
+### Median 
 
 ```{r}
 #| echo: false
@@ -300,7 +313,7 @@ s6 |>
 ```
 
 
-#### IQR 
+### IQR 
 
 ```{r}
 #| echo: false
@@ -334,7 +347,7 @@ s8 |>
 ```
 
 
-#### Shape
+### Shape
 
 ```{r}
 #| echo: false
@@ -403,4 +416,470 @@ s12 |>
   row_spec(color.me.movie5, bold = T, color = "white", background = "green")
   
 ```
+
+## Application Screening
+
+**Question**: You are working on a team that is making a deterministic model to quickly screen through applications for a new position at the company. Based on employment laws, your model may not include variables such as age, race, and gender, which could be potentially discriminatory.
+
+Your colleague suggests including a rule that eliminates candidates with more than 20 years of previous work experience, because they may have high salary expectations. Are there ethical implications of using this variable to select candidates?
+
+Explain your answer.
+
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_app <- assessment |>
+  slice(-c(1:2)) |>
+  select(application_screenin) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_app` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(application_screenin) |>
+  filter(is.na(application_screenin) != T) |>
+  arrange(application_screenin) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## Banana conclusions 
+
+**Question**: Data scientists at FiveThirtyEight administered a food frequency questionnaire. With 54 complete responses they found that people who ate bananas tended to score higher on the SAT verbal section than the SAT math section ($p-value =0.0073$). An article reporting the results of this study has the headline, "Eat more bananas to score higher on the SAT verbal section". 
+
+
+Explain why this title is misleading.
+
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_ban <- assessment |>
+  slice(-c(1:2)) |>
+  select(banana_conclusions) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_ban` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(banana_conclusions) |>
+  filter(is.na(banana_conclusions) != T) |>
+  arrange(banana_conclusions) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## Covid map 
+
+**Question**: The visualization below displays the 14-day rolling average of new COVID-19 cases January 1 - August 31, 2021 in the United States. Each plot represents a state or Washington, D.C., and is labeled using the state's abbreviation (e.g., MA = Massachusetts). The shaded area under each curve represents the increase in new cases since the state's minimum point in 2021. This is a recreation of a similar plot that originally appeared in the New York Times.
+
+![](images/covid_map.png)
+
+What do we learn from this plot about COVID-19 cases in the US?
+
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_vid <- assessment |>
+  slice(-c(1:2)) |>
+  select(covid_map_1_2) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_vid` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(covid_map_1_2) |>
+  filter(is.na(covid_map_1_2) != T) |>
+  arrange(covid_map_1_2) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## Covid map 2
+
+**Question**: The visualization below displays the 14-day rolling average of new COVID-19 cases January 1 - August 31, 2021 in the United States. Each plot represents a state or Washington, D.C., and is labeled using the state's abbreviation (e.g., MA = Massachusetts). The shaded area under each curve represents the increase in new cases since the state's minimum point in 2021. This is a recreation of a similar plot that originally appeared in the New York Times.
+
+![](images/covid_map.png)
+
+Compare KY (Kentucky) in the South region to CA (California) in the West region.Based on this plot, can we conclude there was a difference in overall number of COVID cases in KY and CA in August 2021? Explain.
+
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_vid2 <- assessment |>
+  slice(-c(1:2)) |>
+  select(covid_map_2_2) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_vid2` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(covid_map_2_2) |>
+  filter(is.na(covid_map_2_2) != T) |>
+  arrange(covid_map_2_2) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## Medical screening 
+
+Medical screening tests are not 100% accurate. It's possible to have a disease but not test positive or not have a disease but test positive for it. The following three visualizations display the outcomes of a medical screening test with a sensitivity (true positive rate) of 78.2% and specificity (true negative rate) of 79.6% in a population where 10% of the individuals have the disease.
+
+We are also interested in the false positive (individuals classified as with a disease, who don't actually have it) and false negative (individuals classified as without a disease, but who do actually have it) rates.
+
+![](images/medical.png)
+
+**Question**: Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.
+
+**Note**: Combinations of answers that do not appear in the table were not selected by students
+
+### Sensitivity
+
+```{r}
+#| echo: false
+s13 <- assessment |>
+  slice(-c(1:2)) |>
+  select(disease_screening_1) |>
+  na.omit() |>
+  count(disease_screening_1) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.dis <- which(s13$disease_screening_1 == "Plot A")
+
+s13 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.dis, bold = T, color = "white", background = "green") 
+  
+
+s14 <- assessment |>
+  slice(-c(1:2)) |>
+  select(disease_screening_1) |>
+  count(disease_screening_1) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s14 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.dis, bold = T, color = "white", background = "green")
+  
+```
+
+### Specificity 
+
+```{r}
+#| echo: false
+s15 <- assessment |>
+  slice(-c(1:2)) |>
+  select(disease_screening_2) |>
+  na.omit() |>
+  count(disease_screening_2) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.dis <- which(s15$disease_screening_2 == "Plot A")
+
+s15 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.dis, bold = T, color = "white", background = "green") 
+  
+
+s16 <- assessment |>
+  slice(-c(1:2)) |>
+  select(disease_screening_2) |>
+  count(disease_screening_2) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s16 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.dis, bold = T, color = "white", background = "green")
+  
+```
+
+
+### False positive rate 
+
+```{r}
+#| echo: false
+s17 <- assessment |>
+  slice(-c(1:2)) |>
+  select(disease_screening_3) |>
+  na.omit() |>
+  count(disease_screening_3) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.dis <- which(s17$disease_screening_3 == "Plot A")
+
+s17 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.dis, bold = T, color = "white", background = "green") 
+  
+
+s18 <- assessment |>
+  slice(-c(1:2)) |>
+  select(disease_screening_3) |>
+  count(disease_screening_3) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s18 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.dis, bold = T, color = "white", background = "green")
+  
+```
+
+
+### False negative rate 
+
+```{r}
+#| echo: false
+s19 <- assessment |>
+  slice(-c(1:2)) |>
+  select(disease_screening_4) |>
+  na.omit() |>
+  count(disease_screening_4) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.dis <- which(s19$disease_screening_4 == "Plot A")
+
+s19 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.dis, bold = T, color = "white", background = "green") 
+  
+
+s20 <- assessment |>
+  slice(-c(1:2)) |>
+  select(disease_screening_4) |>
+  count(disease_screening_4) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s20 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.dis, bold = T, color = "white", background = "green")
+  
+```
+
+## He said she said 
+
+**Question** For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
+
+![](images/heshe.png)
+
+Men in Austen's novels are more likely to have 'dared', 'expected', and 'ran' than women.
+
+```{r}
+#| echo: false
+s21 <- assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_1_3) |>
+  na.omit() |>
+  count(he_said_she_said_1_3) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.he <- which(s21$he_said_she_said_1_3 == "FALSE")
+
+s21 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.he, bold = T, color = "white", background = "green") 
+  
+
+s22 <- assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_1_3) |>
+  count(he_said_she_said_1_3) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s22 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.he, bold = T, color = "white", background = "green")
+  
+```
+
+::: {.callout-caution collapse="true"}
+## Need additional information to determine this (text)
+
+```{r}
+#| echo: false
+na_he1 <- assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_1_3_3_text) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_he1` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_1_3_3_text) |>
+  filter(is.na(he_said_she_said_1_3_3_text) != T) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## He said she said 2 
+
+**Question** For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
+
+![](images/heshe.png)
+
+Women in Austen's novels are more likely to have 'remembered', 'felt', and 'cried' than men.
+
+```{r}
+#| echo: false
+s23 <- assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_2_3) |>
+  na.omit() |>
+  count(he_said_she_said_2_3) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.he2 <- which(s23$he_said_she_said_2_3 == "TRUE")
+
+s23 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.he2, bold = T, color = "white", background = "green") 
+  
+
+s24 <- assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_2_3) |>
+  count(he_said_she_said_2_3) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s24 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.he2, bold = T, color = "white", background = "green")
+  
+```
+
+::: {.callout-caution collapse="true"}
+## Need additional information to determine this (text)
+
+```{r}
+#| echo: false
+na_he2 <- assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_2_3_3_text) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_he2` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_2_3_3_text) |>
+  filter(is.na(he_said_she_said_2_3_3_text) != T) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## He said she said 3 
+
+**Question** For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
+
+![](images/heshe.png)
+
+Women in Austen's novels are more likely to have 'remembered' than 'feared'.
+
+```{r}
+#| echo: false
+s25 <- assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_3_3) |>
+  na.omit() |>
+  count(he_said_she_said_3_3) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.he3 <- which(s25$he_said_she_said_2_3 == "TRUE")
+
+s25 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.he2, bold = T, color = "white", background = "green") 
+  
+
+s26 <- assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_3_3) |>
+  count(he_said_she_said_3_3) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s26 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.he3, bold = T, color = "white", background = "green")
+  
+```
+
+::: {.callout-caution collapse="true"}
+## Need additional information to determine this (text)
+
+```{r}
+#| echo: false
+na_he3 <- assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_3_3_3_text) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_he3` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(he_said_she_said_3_3_3_text) |>
+  filter(is.na(he_said_she_said_3_3_3_text) != T) |>
+  kbl() |>
+  kable_styling()
+```
+:::
 
