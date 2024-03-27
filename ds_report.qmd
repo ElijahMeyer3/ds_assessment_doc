@@ -838,7 +838,7 @@ s25 <- assessment |>
   mutate(prop = round(n/sum(n),2))
 
 
-color.me.he3 <- which(s25$he_said_she_said_2_3 == "TRUE")
+color.me.he3 <- which(s25$he_said_she_said_3_3 == "TRUE")
 
 s25 |> 
   kable(booktabs = T , caption = "Table without NAs") |>
@@ -883,3 +883,569 @@ assessment |>
 ```
 :::
 
+## Build a plot 
+
+The following is an intensity map of the unemployment rate among adults in the counties in the United States (based on data from 2019).
+
+![](images/build.png)
+
+**Question**: Indicate which of the following data you need to recreate this map: (Select all that apply.)
+
+**Note** Answers or combinations of answers that do not appear in the plot were not selected by students.
+
+```{r}
+#| echo: false
+s27 <- assessment |>
+  slice(-c(1:2)) |>
+  select(build_a_plot) |>
+  na.omit() |>
+  count(build_a_plot) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.build <- which(s27$build_a_plot == "County boundaries,Number of adults living in each county,Number of unemployed adults living in each county")
+
+s27 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.build, bold = T, color = "white", background = "green") 
+  
+
+s28 <- assessment |>
+  slice(-c(1:2)) |>
+  select(build_a_plot) |>
+  count(build_a_plot) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s28 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.build, bold = T, color = "white", background = "green")
+  
+```
+
+## Realty tree 
+
+A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area.
+
+![](images/tree.png)
+
+**Question**: What price would the tree predict for a house with $3200 ft.^2$ of living area, 1.5 bathrooms, and 1 fireplace?
+
+```{r}
+#| echo: false
+s29 <- assessment |>
+  slice(-c(1:2)) |>
+  select(realty_tree_1_2) |>
+  na.omit() |>
+  count(realty_tree_1_2) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.tree <- which(s29$realty_tree_1_2 == "Can't be determined from the information given.")
+
+s29 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.tree, bold = T, color = "white", background = "green") 
+  
+
+s30 <- assessment |>
+  slice(-c(1:2)) |>
+  select(realty_tree_1_2) |>
+  count(realty_tree_1_2) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s30 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.tree, bold = T, color = "white", background = "green")
+  
+```
+
+## Realty tree 2
+
+A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area.
+
+![](images/tree.png)
+
+**Question**:  What price would the tree predict for a house with 1200 ft.$^2$ of living area and 1.5 bathrooms?
+
+```{r}
+#| echo: false
+s31 <- assessment |>
+  slice(-c(1:2)) |>
+  select(realty_tree_2_2) |>
+  na.omit() |>
+  count(realty_tree_2_2) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.tree2 <- which(s31$realty_tree_2_2 == "$151,424")
+
+s31 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.tree2, bold = T, color = "white", background = "green") 
+  
+
+s32 <- assessment |>
+  slice(-c(1:2)) |>
+  select(realty_tree_2_2) |>
+  count(realty_tree_2_2) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s32 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.tree2, bold = T, color = "white", background = "green")
+```
+
+## Website testing 
+
+An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
+
+![](images/website.png)
+
+Indicate whether each of the following conclusions are valid:
+
+**Question**: Over time the company is getting more returning users regardless of the version of the website.
+
+```{r}
+#| echo: false
+s33 <- assessment |>
+  slice(-c(1:2)) |>
+  select(website_testing_1_3) |>
+  na.omit() |>
+  count(website_testing_1_3) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.web <- which(s33$website_testing_1_3 == "Valid")
+
+s33 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.web, bold = T, color = "white", background = "green") 
+  
+
+s34 <- assessment |>
+  slice(-c(1:2)) |>
+  select(website_testing_1_3) |>
+  count(website_testing_1_3) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s34 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.web, bold = T, color = "white", background = "green")
+```
+
+## Website training 2 
+
+An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
+
+![](images/website.png)
+
+Indicate whether each of the following conclusions are valid:
+
+**Question**: On the 31st day, the blue version of the website is expected to have higher number of returning users.
+
+```{r}
+#| echo: false
+s34 <- assessment |>
+  slice(-c(1:2)) |>
+  select(website_testing_2_3) |>
+  na.omit() |>
+  count(website_testing_2_3) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.web2 <- which(s34$website_testing_2_3 == "Cannot determine from this plot")
+
+s34 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.web2, bold = T, color = "white", background = "green") 
+  
+
+s35 <- assessment |>
+  slice(-c(1:2)) |>
+  select(website_testing_2_3) |>
+  count(website_testing_2_3) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s35 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.web2, bold = T, color = "white", background = "green")
+```
+
+## Website testing 3 
+
+An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
+
+![](images/website.png)
+
+Indicate whether each of the following conclusions are valid:
+
+**Question**: On the 60th day, the blue version of the website is expected to have higher number of returning users.
+
+```{r}
+#| echo: false
+s36 <- assessment |>
+  slice(-c(1:2)) |>
+  select(website_testing_3_3) |>
+  na.omit() |>
+  count(website_testing_3_3) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.web3 <- which(s36$website_testing_3_3 == "Cannot determine from this plot")
+
+s35 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.web3, bold = T, color = "white", background = "green") 
+  
+
+s36 <- assessment |>
+  slice(-c(1:2)) |>
+  select(website_testing_3_3) |>
+  count(website_testing_3_3) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s36 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.web3, bold = T, color = "white", background = "green")
+```
+
+## Image recognition 
+
+A data science student wants to create an image recognition algorithm to identify whether a university professor belongs to a department in the sciences or not. To do this, she collects data by scraping several university photo archives of university faculty. She labels faculty in the photos as "Sciences" or "Not sciences". The images below depict a small representative sample of her data.
+
+![](images/website.png)
+
+**Question**: The data science student plans to use these photos of current university faculty to predict whether they are scientists. What concerns might you have about the predictions from this algorithm?
+
+Explain:
+
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_image <- assessment |>
+  slice(-c(1:2)) |>
+  select(image_recognition1_1) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_image` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(image_recognition1_1) |>
+  filter(is.na(image_recognition1_1) != T) |>
+  arrange(image_recognition1_1) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## Data confidential 
+
+**Question**: A newspaper reports on the results of a survey from a small (<2000 student) university. The university agrees to have the data released to the public so long as the students' identities and academic standing information are kept confidential. Select the safe combination of variables that are unlikely to identify any individual
+
+
+```{r}
+#| echo: false
+s38 <- assessment |>
+  slice(-c(1:2)) |>
+  select(data_confidentiali1_1) |>
+  na.omit() |>
+  count(data_confidentiali1_1) |>
+  mutate(prop = round(n/sum(n),2))
+
+
+color.me.data <- which(s38$data_confidentialil_1 == "")
+
+s38 |> 
+  kable(booktabs = T , caption = "Table without NAs") |>
+  kable_styling() |>
+  row_spec(color.me.data, bold = T, color = "white", background = "green") 
+  
+
+s38 <- assessment |>
+  slice(-c(1:2)) |>
+  select(data_confidentiali1_1) |>
+  count(data_confidentiali1_1) |>
+  mutate(prop = round(n/sum(n),2)) 
+
+s38 |>
+  kable(booktabs = T, caption = "Table with NAs") %>%
+  kable_styling() %>%
+  row_spec(color.me.data, bold = T, color = "white", background = "green")
+```
+
+## Activity journal
+
+Below is data that was recorded in an activity journal
+
+![](images/website.png)
+
+**Question**: A data scientist reformats the data into a table so that each variable represented in the data is recorded in a single column. Describe what each of the columns of this table will contain, as well as what each row or observation of the table will represent.
+
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_act <- assessment |>
+  slice(-c(1:2)) |>
+  select(activity_journal_1_1) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_act` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(activity_journal_1_1) |>
+  filter(is.na(activity_journal_1_1) != T) |>
+  arrange(activity_journal_1_1) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## Movie wrangling 
+
+The table below provides data about 10 movies released in the United States. It provides data on the movie's title (title), the movie's director (director), the date the movie was released (release_date), the season the movie was released (season), the worldwide gross intake in U.S. dollars (gross), the cleaned version of the worldwide gross intake in U.S. dollars (gross_clean), and whether or not the movie won the Best Picture Oscar (best_picture).
+
+![](images/wrangle.png)
+
+**Question**: Describe a process that you could use to generate the data in the season column using the information in the release_date column.
+
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_wrang <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_1_6) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_wrang` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_1_6) |>
+  filter(is.na(movie_wrangling_1_6) != T) |>
+  arrange(movie_wrangling_1_6) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## Movie wrangling 2
+
+The table below provides data about 10 movies released in the United States. It provides data on the movie's title (title), the movie's director (director), the date the movie was released (release_date), the season the movie was released (season), the worldwide gross intake in U.S. dollars (gross), the cleaned version of the worldwide gross intake in U.S. dollars (gross_clean), and whether or not the movie won the Best Picture Oscar (best_picture).
+
+![](images/wrangle.png)
+
+
+**Question**: Describe a process that you could use to generate the data in the gross_clean column using the information in the gross column.
+
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_wrang2 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_2_6) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_wrang2` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_2_6) |>
+  filter(is.na(movie_wrangling_2_6) != T) |>
+  arrange(movie_wrangling_2_6) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## Movie wrangling 3
+
+The table below provides data about 10 movies released in the United States. It provides data on the movie's title (title), the movie's director (director), the date the movie was released (release_date), the season the movie was released (season), the worldwide gross intake in U.S. dollars (gross), the cleaned version of the worldwide gross intake in U.S. dollars (gross_clean), and whether or not the movie won the Best Picture Oscar (best_picture).
+
+![](images/wrangle.png)
+
+**Question**: You have been tasked with adding a new column called nominated_for_best_picture which indicates whether or not each movie was nominated for the Best Picture Oscar ("Yes" if it was, "No" if it was not). Is there sufficient information in this dataset to generate this new column? Explain.
+
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_wrang3 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_3_6) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_wrang3` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_3_6) |>
+  filter(is.na(movie_wrangling_3_6) != T) |>
+  arrange(movie_wrangling_3_6) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## Movie wrangling 4
+
+![](images/wrangle.png)
+
+The table below provides data about 10 movie directors. It provides data on the director's name (director), the number of Oscars the movie's director has been nominated for (nominations), and the number of Oscars the director has won (oscars).
+
+![](images/wrangle2.png)
+
+**Question**: Use the data in the Movies Table and in the Directors Table to answer the following questions. For each question, what is the result of carrying out the given pseudocode (ie. code recipe)?
+
+START_WITH(the Movies table) then
+
+    KEEP_ROWS_WHERE(the season value is Fall) then
+
+    COUNT(the number of rows)
+    
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_wrang4 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_4_6) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_wrang4` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_4_6) |>
+  filter(is.na(movie_wrangling_4_6) != T) |>
+  arrange(movie_wrangling_4_6) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## Movie wrangling 5
+
+![](images/wrangle.png)
+
+The table below provides data about 10 movie directors. It provides data on the director's name (director), the number of Oscars the movie's director has been nominated for (nominations), and the number of Oscars the director has won (oscars).
+
+![](images/wrangle2.png)
+
+**Question**: Use the data in the Movies Table and in the Directors Table to answer the following questions. For each question, what is the result of carrying out the given pseudocode (ie. code recipe)?
+
+START_WITH(the Movies table) then 
+
+    KEEP_ROWS_WHERE(the season value is Fall) then 
+
+    COUNT(the number of rows) WHERE( best_picture value is Yes)
+    
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_wrang5 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_5_6) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_wrang5` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_5_6) |>
+  filter(is.na(movie_wrangling_5_6) != T) |>
+  arrange(movie_wrangling_5_6) |>
+  kbl() |>
+  kable_styling()
+```
+:::
+
+## Movie wrangling 6 
+
+![](images/wrangle.png)
+
+The table below provides data about 10 movie directors. It provides data on the director's name (director), the number of Oscars the movie's director has been nominated for (nominations), and the number of Oscars the director has won (oscars).
+
+![](images/wrangle2.png)
+
+**Question**: Use the data in the Movies Table and in the Directors Table to answer the following questions. For each question, what is the result of carrying out the given pseudocode (ie. code recipe)?
+
+
+START_WITH(the Movies table) then
+
+    KEEP_ROWS_WHERE(the season value is Fall then 
+
+    ADD_COLUMNS_FROM(the Director Table) MATCHING_BY(the director column) then 
+
+    COUNT(the number of rows) WHERE(oscars value is 3) AND(best_picture value is No)
+    
+::: {.callout-caution collapse="true"}
+## Raw responses
+
+```{r}
+#| echo: false
+na_wrang6 <- assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_6_6) |>
+  summarize_all(~ sum(is.na(.)))
+```
+
+There are `r na_wrang6` missing observations for this question. Complete responses can be seen below.
+
+```{r}
+#| echo: false
+assessment |>
+  slice(-c(1:2)) |>
+  select(movie_wrangling_6_6) |>
+  filter(is.na(movie_wrangling_6_6) != T) |>
+  arrange(movie_wrangling_6_6) |>
+  kbl() |>
+  kable_styling()
+```
+:::
