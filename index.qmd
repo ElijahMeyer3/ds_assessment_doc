@@ -21,6 +21,23 @@ library(magrittr)
 library(DT)
 ```
 
+# Question assignments
+
+| Team member           | Question assignment |
+|-----------------------|---------------------|
+| Mine Çetinkaya-Rundel |                     |
+| Elijah Meyer          |                     |
+| Maria Tackett         |                     |
+| Mine Dogucu           |                     |
+| Matt Beckman          |                     |
+| Andy Zieffler         |                     |
+| Chelsey Legacy        |                     |
+
+## Data analysis instructions 
+
+TBD
+
+
 # Data
 
 ```{r}
@@ -46,7 +63,7 @@ mc <- assessment |>
   dplyr::select(storm_paths, contains("realty"), contains("movie_budget"), he_said_she_said_1_3, he_said_she_said_2_3, he_said_she_said_3_3, contains("screening"), contains("website"), contains("build"), contains("confidentiali"))
 ```
 
-There are `r nrow(assessment) - 2` participants in our data set. Of the `r nrow(assessment) - 2` participants, `r sum(assessment$finished, na.rm = T)` made it to the last question of the survey.  
+There are `r nrow(assessment) - 2` participants that opted into our study. Of the `r nrow(assessment) - 2` participants, `r sum(assessment$finished, na.rm = T)` made it to the last question of the survey.
 
 ::: {.callout-caution collapse="true"}
 ## Missing observations
@@ -56,12 +73,12 @@ There are `r nrow(assessment) - 2` participants in our data set. Of the `r nrow(
 set.cutoff <- .8
 set.cutoff.correct <- .5
 ```
- 
+
 Below are the percentages of missing observations by question. Questions that have at least `r set.cutoff` percent missing are highlighted in red.
 
-Note: **he_said_she_said 1 & 2** are suppose to be missing. 
+Note: **he_said_she_said 1 & 2** are suppose to be missing.
 
-Note: **he_said_she_said 3** will be missing if students answered this question incorrectly. 
+Note: **he_said_she_said 3** will be missing if students answered this question incorrectly.
 
 ```{r}
 #| echo: false
@@ -94,7 +111,6 @@ p |>
 
 ```
 :::
-
 
 ::: {.callout-caution collapse="true"}
 ## Percent correct - multiple choice
@@ -156,7 +172,6 @@ Note: The question **build_a_plot** was graded using the solution: *"County boun
 
 The average time it took to complete this survey was `r round(mean(assessment$duration_in_seconds, na.rm = T)/60, 2)` minutes, with `r sum(assessment$duration_in_seconds/60 > 60, na.rm = T)` students taking more than 60 minutes to complete the assessment, and `r sum(assessment$duration_in_seconds/60 > 120, na.rm = T)` students taking more than 120 minutes to complete the assessment.
 
-
 ```{r}
 #| echo: false
 assessment |>
@@ -189,9 +204,10 @@ fast <- assessment |>
   nrow()
 ```
 
-`r nrow(assessment) - pass` students failed at least one of the attention checks in the survey. `r fast` students completed the assessment in 10 minutes or less. These data have been filtered out for this report. 
+`r nrow(assessment) - pass` students failed at least one of the attention checks in the survey. `r fast` students completed the assessment in 10 minutes or less. These data have been filtered out for this report.
 
 ```{r}
+#| echo: false
 
 assessment_clean <- assessment |>
   filter(stringr::str_detect(attention_check_1_2, "passing") &
@@ -199,6 +215,7 @@ assessment_clean <- assessment |>
         duration_in_seconds > 600)
 ```
 
+# Questions
 
 ## Storm paths
 
@@ -226,7 +243,6 @@ s1 |>
   
 
 s2 <- assessment_clean |>
-  slice(-c(1:2)) |>
   select(storm_paths) |>
   count(storm_paths) |>
   mutate(prop = round(n/sum(n),2)) 
@@ -239,6 +255,7 @@ s2 |>
 ```
 
 ### Explain
+
 ::: {.callout-caution collapse="true"}
 ## Raw responses
 
@@ -254,7 +271,6 @@ There are `r na_storm` missing observations for this question. Complete response
 ```{r}
 #| echo: false
 assessment_clean |>
-  slice(-c(1:2)) |>
   select(storm_paths, storm_paths_explana) |>
   filter(is.na(storm_paths) != T & is.na(storm_paths_explana) != T) |>
   arrange(storm_paths) |>
@@ -263,7 +279,7 @@ assessment_clean |>
 ```
 :::
 
-## Movie budgets 
+## Movie budgets
 
 A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots.
 
@@ -304,7 +320,7 @@ s4 |>
   
 ```
 
-### Median 
+### Median
 
 ```{r}
 #| echo: false
@@ -337,8 +353,7 @@ s6 |>
   
 ```
 
-
-### IQR 
+### IQR
 
 ```{r}
 #| echo: false
@@ -370,7 +385,6 @@ s8 |>
   row_spec(color.me.movie2, bold = T, color = "white", background = "green")
   
 ```
-
 
 ### Shape
 
@@ -474,10 +488,9 @@ assessment_clean |>
 ```
 :::
 
-## Banana conclusions 
+## Banana conclusions
 
-**Question**: Data scientists at FiveThirtyEight administered a food frequency questionnaire. With 54 complete responses they found that people who ate bananas tended to score higher on the SAT verbal section than the SAT math section ($p-value =0.0073$). An article reporting the results of this study has the headline, "Eat more bananas to score higher on the SAT verbal section". 
-
+**Question**: Data scientists at FiveThirtyEight administered a food frequency questionnaire. With 54 complete responses they found that people who ate bananas tended to score higher on the SAT verbal section than the SAT math section ($p-value =0.0073$). An article reporting the results of this study has the headline, "Eat more bananas to score higher on the SAT verbal section".
 
 Explain why this title is misleading.
 
@@ -504,7 +517,7 @@ assessment_clean |>
 ```
 :::
 
-## Covid map 
+## Covid map
 
 **Question**: The visualization below displays the 14-day rolling average of new COVID-19 cases January 1 - August 31, 2021 in the United States. Each plot represents a state or Washington, D.C., and is labeled using the state's abbreviation (e.g., MA = Massachusetts). The shaded area under each curve represents the increase in new cases since the state's minimum point in 2021. This is a recreation of a similar plot that originally appeared in the New York Times.
 
@@ -567,7 +580,7 @@ assessment_clean |>
 ```
 :::
 
-## Medical screening 
+## Medical screening
 
 Medical screening tests are not 100% accurate. It's possible to have a disease but not test positive or not have a disease but test positive for it. The following three visualizations display the outcomes of a medical screening test with a sensitivity (true positive rate) of 78.2% and specificity (true negative rate) of 79.6% in a population where 10% of the individuals have the disease.
 
@@ -612,7 +625,7 @@ s14 |>
   
 ```
 
-### Specificity 
+### Specificity
 
 ```{r}
 #| echo: false
@@ -645,8 +658,7 @@ s16 |>
   
 ```
 
-
-### False positive rate 
+### False positive rate
 
 ```{r}
 #| echo: false
@@ -679,8 +691,7 @@ s18 |>
   
 ```
 
-
-### False negative rate 
+### False negative rate
 
 ```{r}
 #| echo: false
@@ -713,7 +724,7 @@ s20 |>
   
 ```
 
-## He said she said 
+## He said she said
 
 **Question** For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
 
@@ -762,7 +773,6 @@ na_he1 <- assessment_clean |>
   summarize_all(~ sum(is.na(.)))
 ```
 
-
 ```{r}
 #| echo: false
 assessment_clean |>
@@ -773,7 +783,7 @@ assessment_clean |>
 ```
 :::
 
-## He said she said 2 
+## He said she said 2
 
 **Question** For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
 
@@ -822,7 +832,6 @@ na_he2 <- assessment_clean |>
   summarize_all(~ sum(is.na(.)))
 ```
 
-
 ```{r}
 #| echo: false
 assessment_clean |>
@@ -833,7 +842,7 @@ assessment_clean |>
 ```
 :::
 
-## He said she said 3 
+## He said she said 3
 
 **Question** For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
 
@@ -851,12 +860,12 @@ s25 <- assessment_clean |>
   arrange(desc(prop))
 
 
-color.me.he3 <- which(s25$he_said_she_said_3_3 == "TRUE")
+color.me.he3 <- which(s25$he_said_she_said_3_3 == "Need additional information to determine this:")
 
 s25 |> 
   kable(booktabs = T , caption = "Table without NAs") |>
   kable_styling() |>
-  row_spec(color.me.he2, bold = T, color = "white", background = "green") 
+  row_spec(color.me.he3, bold = T, color = "white", background = "green") 
   
 
 s26 <- assessment_clean |>
@@ -882,7 +891,6 @@ na_he3 <- assessment_clean |>
   summarize_all(~ sum(is.na(.)))
 ```
 
-
 ```{r}
 #| echo: false
 assessment_clean |>
@@ -893,7 +901,7 @@ assessment_clean |>
 ```
 :::
 
-## Build a plot 
+## Build a plot
 
 The following is an intensity map of the unemployment rate among adults in the counties in the United States (based on data from 2019).
 
@@ -934,7 +942,7 @@ s28 |>
   
 ```
 
-## Realty tree 
+## Realty tree
 
 A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area.
 
@@ -980,7 +988,7 @@ A realtor has trained a regression tree to predict the price of a house from fea
 
 ![](images/tree.png)
 
-**Question**:  What price would the tree predict for a house with 1200 ft.$^2$ of living area and 1.5 bathrooms?
+**Question**: What price would the tree predict for a house with 1200 ft.$^2$ of living area and 1.5 bathrooms?
 
 ```{r}
 #| echo: false
@@ -1011,7 +1019,7 @@ s32 |>
   row_spec(color.me.tree2, bold = T, color = "white", background = "green")
 ```
 
-## Website testing 
+## Website testing
 
 An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
 
@@ -1051,7 +1059,7 @@ s34 |>
   row_spec(color.me.web, bold = T, color = "white", background = "green")
 ```
 
-## Website training 2 
+## Website training 2
 
 An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
 
@@ -1091,7 +1099,7 @@ s35 |>
   row_spec(color.me.web2, bold = T, color = "white", background = "green")
 ```
 
-## Website testing 3 
+## Website testing 3
 
 An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
 
@@ -1131,7 +1139,7 @@ s37 |>
   row_spec(color.me.web3, bold = T, color = "white", background = "green")
 ```
 
-## Image recognition 
+## Image recognition
 
 A data science student wants to create an image recognition algorithm to identify whether a university professor belongs to a department in the sciences or not. To do this, she collects data by scraping several university photo archives of university faculty. She labels faculty in the photos as "Sciences" or "Not sciences". The images below depict a small representative sample of her data.
 
@@ -1164,10 +1172,9 @@ assessment_clean |>
 ```
 :::
 
-## Data confidential 
+## Data confidential
 
-**Question**: A newspaper reports on the results of a survey from a small (<2000 student) university. The university agrees to have the data released to the public so long as the students' identities and academic standing information are kept confidential. Select the safe combination of variables that are unlikely to identify any individual
-
+**Question**: A newspaper reports on the results of a survey from a small (\<2000 student) university. The university agrees to have the data released to the public so long as the students' identities and academic standing information are kept confidential. Select the safe combination of variables that are unlikely to identify any individual
 
 ```{r}
 #| echo: false
@@ -1230,7 +1237,7 @@ assessment_clean |>
 ```
 :::
 
-## Movie wrangling 
+## Movie wrangling
 
 The table below provides data about 10 movies released in the United States. It provides data on the movie's title (title), the movie's director (director), the date the movie was released (release_date), the season the movie was released (season), the worldwide gross intake in U.S. dollars (gross), the cleaned version of the worldwide gross intake in U.S. dollars (gross_clean), and whether or not the movie won the Best Picture Oscar (best_picture).
 
@@ -1266,7 +1273,6 @@ assessment_clean |>
 The table below provides data about 10 movies released in the United States. It provides data on the movie's title (title), the movie's director (director), the date the movie was released (release_date), the season the movie was released (season), the worldwide gross intake in U.S. dollars (gross), the cleaned version of the worldwide gross intake in U.S. dollars (gross_clean), and whether or not the movie won the Best Picture Oscar (best_picture).
 
 ![](images/wrangle.png)
-
 
 **Question**: Describe a process that you could use to generate the data in the gross_clean column using the information in the gross column.
 
@@ -1336,10 +1342,12 @@ The table below provides data about 10 movie directors. It provides data on the 
 
 START_WITH(the Movies table) then
 
-    KEEP_ROWS_WHERE(the season value is Fall) then
+```         
+KEEP_ROWS_WHERE(the season value is Fall) then
 
-    COUNT(the number of rows)
-    
+COUNT(the number of rows)
+```
+
 ::: {.callout-caution collapse="true"}
 ## Raw responses
 
@@ -1373,12 +1381,14 @@ The table below provides data about 10 movie directors. It provides data on the 
 
 **Question**: Use the data in the Movies Table and in the Directors Table to answer the following questions. For each question, what is the result of carrying out the given pseudocode (ie. code recipe)?
 
-START_WITH(the Movies table) then 
+START_WITH(the Movies table) then
 
-    KEEP_ROWS_WHERE(the season value is Fall) then 
+```         
+KEEP_ROWS_WHERE(the season value is Fall) then 
 
-    COUNT(the number of rows) WHERE( best_picture value is Yes)
-    
+COUNT(the number of rows) WHERE( best_picture value is Yes)
+```
+
 ::: {.callout-caution collapse="true"}
 ## Raw responses
 
@@ -1402,7 +1412,7 @@ assessment_clean |>
 ```
 :::
 
-## Movie wrangling 6 
+## Movie wrangling 6
 
 ![](images/wrangle.png)
 
@@ -1412,15 +1422,16 @@ The table below provides data about 10 movie directors. It provides data on the 
 
 **Question**: Use the data in the Movies Table and in the Directors Table to answer the following questions. For each question, what is the result of carrying out the given pseudocode (ie. code recipe)?
 
-
 START_WITH(the Movies table) then
 
-    KEEP_ROWS_WHERE(the season value is Fall then 
+```         
+KEEP_ROWS_WHERE(the season value is Fall then 
 
-    ADD_COLUMNS_FROM(the Director Table) MATCHING_BY(the director column) then 
+ADD_COLUMNS_FROM(the Director Table) MATCHING_BY(the director column) then 
 
-    COUNT(the number of rows) WHERE(oscars value is 3) AND(best_picture value is No)
-    
+COUNT(the number of rows) WHERE(oscars value is 3) AND(best_picture value is No)
+```
+
 ::: {.callout-caution collapse="true"}
 ## Raw responses
 

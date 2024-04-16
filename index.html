@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -110,10 +76,17 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#data" id="toc-data" class="nav-link active" data-scroll-target="#data">Data</a>
+  <li><a href="#question-assignments" id="toc-question-assignments" class="nav-link active" data-scroll-target="#question-assignments">Question assignments</a>
+  <ul class="collapse">
+  <li><a href="#data-analysis-instructions" id="toc-data-analysis-instructions" class="nav-link" data-scroll-target="#data-analysis-instructions">Data analysis instructions</a></li>
+  </ul></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a>
   <ul class="collapse">
   <li><a href="#time-spent" id="toc-time-spent" class="nav-link" data-scroll-target="#time-spent">Time spent</a></li>
   <li><a href="#student-checks" id="toc-student-checks" class="nav-link" data-scroll-target="#student-checks">Student checks</a></li>
+  </ul></li>
+  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions">Questions</a>
+  <ul class="collapse">
   <li><a href="#storm-paths" id="toc-storm-paths" class="nav-link" data-scroll-target="#storm-paths">Storm paths</a>
   <ul class="collapse">
   <li><a href="#explain" id="toc-explain" class="nav-link" data-scroll-target="#explain">Explain</a></li>
@@ -180,9 +153,54 @@ window.Quarto = {
 </header>
 
 
+<section id="question-assignments" class="level1">
+<h1>Question assignments</h1>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Team member</th>
+<th>Question assignment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mine Çetinkaya-Rundel</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Elijah Meyer</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Maria Tackett</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Mine Dogucu</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Matt Beckman</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Andy Zieffler</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Chelsey Legacy</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<section id="data-analysis-instructions" class="level2">
+<h2 class="anchored" data-anchor-id="data-analysis-instructions">Data analysis instructions</h2>
+<p>TBD</p>
+</section>
+</section>
 <section id="data" class="level1">
 <h1>Data</h1>
-<p>There are 207 participants in our data set. Of the 207 participants, 205 made it to the last question of the survey.</p>
+<p>There are 207 participants that opted into our study. Of the 207 participants, 205 made it to the last question of the survey.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -506,13 +524,10 @@ Percent correct - multiple choice
 <section id="student-checks" class="level2">
 <h2 class="anchored" data-anchor-id="student-checks">Student checks</h2>
 <p>4 students failed at least one of the attention checks in the survey. 1 students completed the assessment in 10 minutes or less. These data have been filtered out for this report.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>assessment_clean <span class="ot">&lt;-</span> assessment <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(stringr<span class="sc">::</span><span class="fu">str_detect</span>(attention_check_1_2, <span class="st">"passing"</span>) <span class="sc">&amp;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        attention_check_2_2 <span class="sc">==</span> <span class="st">"$262,972"</span> <span class="sc">&amp;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        duration_in_seconds <span class="sc">&gt;</span> <span class="dv">600</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
+</section>
+<section id="questions" class="level1">
+<h1>Questions</h1>
 <section id="storm-paths" class="level2">
 <h2 class="anchored" data-anchor-id="storm-paths">Storm paths</h2>
 <p>The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?</p>
@@ -558,7 +573,7 @@ Percent correct - multiple choice
 <tbody>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">City a</td>
-<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">169</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">171</td>
 <td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.83</td>
 </tr>
 <tr class="even">
@@ -597,6 +612,14 @@ Raw responses
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td style="text-align: left;">City a</td>
+<td style="text-align: left;">The individual simulation that struck City B has little bearing on the actual probability that the event occurs. City A is located within an area with a much higher likelihood of the storm passing through based on the trend of the simulations.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City a</td>
+<td style="text-align: left;">more of the potential paths are in the vicinity of a than they are of b</td>
+</tr>
 <tr class="odd">
 <td style="text-align: left;">City a</td>
 <td style="text-align: left;">City a is closer to more of the potential paths than city b, therefore it is more likely to be hit by the storm.</td>
@@ -5486,14 +5509,14 @@ Need additional information to determine this (text)
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Need additional information to determine this:</td>
-<td style="text-align: right;">101</td>
-<td style="text-align: right;">0.49</td>
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">Need additional information to determine this:</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">101</td>
+<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.49</td>
 </tr>
 <tr class="even">
-<td style="text-align: left; font-weight: bold; color: white !important; background-color: green !important;">TRUE</td>
-<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">95</td>
-<td style="text-align: right; font-weight: bold; color: white !important; background-color: green !important;">0.46</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">0.46</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FALSE</td>
