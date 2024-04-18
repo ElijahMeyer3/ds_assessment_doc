@@ -33,10 +33,19 @@ library(DT)
 | Andy Zieffler         |                     |
 | Chelsey Legacy        |                     |
 
-## Data analysis instructions 
+# Data analysis instructions
 
-TBD
+Below is a draft to be updated with the team.
 
+Thematic analysis
+
+- code the different statements to identify similar characteristics among answers
+
+- identify patterns among codes to create emergent themes (named groups)
+
+- define themes created 
+
+Suggested to do this independently and compare results to help establish evidence of validity (Consensus coding).
 
 # Data
 
@@ -1454,3 +1463,30 @@ assessment_clean |>
   kable_styling()
 ```
 :::
+
+# Key 
+
+```{r}
+#| echo: false
+
+key_print <- tibble(
+  question = unique(mc2$question),
+  correct = c( "City a", "Can't be determined from the information given.", "$151,424", "Plot A", "Plot D", "Plot D", "Plot B,Plot D", "Horror", "FALSE", "TRUE", "Need additional information to determine this:", "", "", "", "", "Valid", "Cannot determine from this plot", "Cannot determine from this plot", "County boundaries,Unemployment rate in each county || County boundaries,Number of adults living in each county,Number of unemployed adults living in each county", "None of the above")
+)
+
+color.me.build.key <- which(str_detect(key$question, "build"))
+color.me.key <- which(str_detect(key$question, "disease_screening") |
+                    str_detect(key$question, "data")| 
+                    str_detect(key$question, "1_4")) 
+
+key_print |>
+  kbl() |>
+  kable_styling() |>
+  row_spec(color.me.key, bold = T, color = "black", background = "yellow") |>
+  row_spec(color.me.build.key, bold = T, color = "black" , background = "blue") |>
+  footnote(general = "Questions in blue have more than one answer. Questions in
+           yellow do not have official answers",
+           alphabet = c("movie budgest question may have unintended Plot D answer","disease questions could be answered by all plots if counts / percentages are known ", "team has not come to a concensus on answer (None of the above vs GPA and major)"))
+```
+
+
