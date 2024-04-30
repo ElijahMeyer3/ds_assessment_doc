@@ -1,0 +1,39 @@
+---
+title: "Question Changes"
+subtitle: "From pilot 1 -> pilot 2"
+format: html
+editor: visual
+toc: TRUE
+---
+
+## Movie budgets 2
+
+**Question**: For each genre, the data scientist also fitted a regression line to model the relationship between movies' budgets and their revenues. A scatterplot of this relationship, along with the fitted regression line, is shown for each of the four genres below. For which genre would the fitted regression model produce the highest $R^2$ value?
+
+![](images/movies2.png)
+
+**Cons**: 
+
+-   Lots of overlapping data 
+-   Too many plots 
+-   Tough expectations to discern $R^2$s so close together 
+-   Doesn't assess anything about linearity 
+
+## New Question: Shop sales 
+
+Suppose a data scientist was hired by to investigate the relationship between coffee sales and tea sales across three different shops. They set out and collected the total number of cups of coffee sold and the total number of cups of tea sold each day for 120 days for each shop. A scatterplot of these relationships, along with the fitted regression line, is shown for each of the three shops. Select the option that would produce the highest $R^2$ value. 
+
+![](images/coffee.png)
+
+a. Shop 1 
+b. Shop 2 
+c. Shop 3 
+d. Impossible to tell based on the graph alone
+
+Select the option that would produce the lowest $R^2$ value.
+
+a. Shop 1 
+b. Shop 2 
+c. Shop 3 
+d. Impossible to tell based on the graph alone
+
