@@ -6,6 +6,44 @@ editor: visual
 toc: TRUE
 ---
 
+## Packages
+```{r}
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(MASS)
+library(data.table)
+library(mgcv)
+```
+
+
+## Storm paths
+
+The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?
+
+![](images/storm.png)
+
+**Cons**:
+
+-   Need distractors 
+
+
+## New Question: Storm Paths 
+
+The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?
+
+![](images/storm.png)
+
+a. City a 
+b. City b
+c. The storm is equally likely to hit City a or City b
+d. Impossible to tell based on the graph alone
+
+
 ## Movie budgets 2
 
 **Question**: For each genre, the data scientist also fitted a regression line to model the relationship between movies' budgets and their revenues. A scatterplot of this relationship, along with the fitted regression line, is shown for each of the four genres below. For which genre would the fitted regression model produce the highest $R^2$ value?
@@ -17,7 +55,36 @@ toc: TRUE
 -   Lots of overlapping data 
 -   Too many plots 
 -   Tough expectations to discern $R^2$s so close together 
+-   Most selected graph actually has the smallest correlation 
 -   Doesn't assess anything about linearity 
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+movies <- read_csv("https://raw.githubusercontent.com/danielgrijalva/movie-stats/master/movies.csv")
+
+# Select subset of movies
+genre_list <- c("Action", "Animation", "Drama", "Horror")
+set.seed(12345)
+movies_2 = movies |>
+  filter(genre %in% genre_list, budget > 0) |>
+  sample_n(n())
+```
+
+```{r}
+#| warning: false
+#| message: false
+
+
+movies_2 |>
+  filter(!is.na((gross)),
+         !is.na(budget))|>
+  group_by(genre) |>
+  summarize(rsq = cor(budget, gross)^2)
+```
+
 
 ## New Question: Shop sales 
 
@@ -30,10 +97,114 @@ b. Shop 2
 c. Shop 3 
 d. Impossible to tell based on the graph alone
 
-Select the option that would produce the lowest $R^2$ value.
+**Select the option that would produce the lowest $R^2$ value.**
 
 a. Shop 1 
 b. Shop 2 
 c. Shop 3 
 d. Impossible to tell based on the graph alone
 
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+# linear data
+
+set.seed(1234)
+n <- 118 
+corr_12 <- .8
+corr_13 <- .8
+corr_23 <- .8
+cov_matrix <- matrix(c(1, corr_12, corr_13, corr_12, 1, corr_23, corr_13, corr_23, 1), nrow = 3)
+
+sim_data <- data.frame(round(mvrnorm(n = n, mu = c(50,30, 30), Sigma = cov_matrix),2))
+
+out <- c(49, 30, 33.5)
+out2 <- c(48.5,30,34)
+sim_data <- rbind(sim_data, out, out2)
+
+## non-linear 
+
+set.seed(1234)
+x <- c(48, 49, 50, 51, 52, 53, 56 , 56)
+y <- c(38, 35, 25, 25, 38, 30, 28, 28)
+df <- data.table(cbind(x,y))
+
+
+  
+df[, xend := (shift(x, type = "lead"))]
+df[, yend := (shift(y, type = "lead"))]
+
+df <- df |>
+  slice(1:5) |>
+  mutate(id = 1:5)
+
+interp_line <- function(x, y, xend, yend) {
+  slope <- (yend - y)/(xend - x)
+  b <- y - slope*x
+  newx <- seq(x, xend, length = 100)
+  newy <- newx*slope + b
+  
+  data.table::data.table(x = newx, y = newy)
+}
+  
+dx <- df[, interp_line(x, y, xend, yend), keyby = id]
+
+gam.fit <- gam(y ~ s(x, k = 7), data = dx)
+
+
+rand_data <- data.table(x = runif(120, 48, 54)) # take 120 of them
+rand_data$y <- predict(gam.fit, newdata = rand_data) + rnorm(nrow(rand_data),0, .5)
+
+all_sim_data <- cbind(sim_data, rand_data)
+
+sim_data |>
+  summarise(Shop1 = cor(X1, X2)^2, 
+            Shop2 = cor(X1, X3)^2,
+            Shop3 = cor(x,y)^2)
+```
+
+```{r}
+#| echo: false
+#| eval: false
+
+## Code for plots 
+
+p1 <- sim_data |>
+  ggplot(
+    aes(x = X2, y = X1)
+  ) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = F) +
+  theme(panel.grid = element_blank()) +
+  xlim(27,34.5) + 
+  labs(title = "Shop 1",
+       x = "Cups of coffee sold",
+       y = "Cups of tea sold")
+  
+
+p2 <- sim_data |>
+  ggplot(
+    aes(x = X3, y = X1)
+  ) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = F) + 
+  theme(panel.grid = element_blank()) +
+  xlim(27,34.5) +
+  labs(title = "Shop 3",
+       x = "Cups of coffee sold",
+       y = "Cups of tea sold")
+
+p3 <- ggplot(data = rand_data2, aes(x = x, y = y)) +
+  geom_point(size = 1)  +
+  theme(panel.grid = element_blank())+
+  geom_smooth(se = F) + 
+  xlim(27,34.5) +
+  labs(title = "Shop 2",
+       x = "Cups of coffee sold",
+       y = "Cups of tea sold")
+
+grid.arrange(p1,p3,p2 , nrow = 3)
+
+```
