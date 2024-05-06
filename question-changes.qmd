@@ -18,6 +18,7 @@ library(tidyr)
 library(MASS)
 library(data.table)
 library(mgcv)
+library(gridExtra)
 ```
 
 
@@ -127,8 +128,8 @@ sim_data <- rbind(sim_data, out, out2)
 ## non-linear 
 
 set.seed(1234)
-x <- c(48, 49, 50, 51, 52, 53, 56 , 56)
-y <- c(38, 35, 25, 25, 38, 30, 28, 28)
+x <- c(48, 49, 50, 51, 52, 52, 52,  53, 54 , 54)
+y <- c(38, 35, 25, 25, 38, 38 , 38, 34, 34, 34)
 df <- data.table(cbind(x,y))
 
 
@@ -196,10 +197,17 @@ p2 <- sim_data |>
        x = "Cups of coffee sold",
        y = "Cups of tea sold")
 
+rand_data2 <- rand_data |>
+  mutate(x = x - 20) 
+
+
+
+
+
 p3 <- ggplot(data = rand_data2, aes(x = x, y = y)) +
   geom_point(size = 1)  +
   theme(panel.grid = element_blank())+
-  geom_smooth(se = F) + 
+  geom_smooth(method = "loess", se = F) + 
   xlim(27,34.5) +
   labs(title = "Shop 2",
        x = "Cups of coffee sold",

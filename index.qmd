@@ -429,7 +429,7 @@ s10 |>
   
 ```
 
-## Movie bugets 2
+## Movie budgets 2
 
 **Question**: For each genre, the data scientist also fitted a regression line to model the relationship between movies' budgets and their revenues. A scatterplot of this relationship, along with the fitted regression line, is shown for each of the four genres below. For which genre would the fitted regression model produce the highest $R^2$ value?
 
