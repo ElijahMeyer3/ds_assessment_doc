@@ -98,12 +98,8 @@ b. Shop 2
 c. Shop 3 
 d. Impossible to tell based on the graph alone
 
-**Select the option that would produce the lowest $R^2$ value.**
 
-a. Shop 1 
-b. Shop 2 
-c. Shop 3 
-d. Impossible to tell based on the graph alone
+$R^2$ values for the three plots above
 
 ```{r}
 #| echo: false
