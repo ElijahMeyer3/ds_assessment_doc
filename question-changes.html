@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.530">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -113,6 +113,8 @@ window.Quarto = {
   <li><a href="#new-question-storm-paths" id="toc-new-question-storm-paths" class="nav-link" data-scroll-target="#new-question-storm-paths">New Question: Storm Paths</a></li>
   <li><a href="#movie-budgets-2" id="toc-movie-budgets-2" class="nav-link" data-scroll-target="#movie-budgets-2">Movie budgets 2</a></li>
   <li><a href="#new-question-shop-sales" id="toc-new-question-shop-sales" class="nav-link" data-scroll-target="#new-question-shop-sales">New Question: Shop sales</a></li>
+  <li><a href="#banana-conclusion" id="toc-banana-conclusion" class="nav-link" data-scroll-target="#banana-conclusion">Banana conclusion</a></li>
+  <li><a href="#new-question-banana-conclusion" id="toc-new-question-banana-conclusion" class="nav-link" data-scroll-target="#new-question-banana-conclusion">New Question: Banana conclusion</a></li>
   </ul>
 </nav>
 </div>
@@ -218,6 +220,22 @@ window.Quarto = {
 </div>
 </div>
 </section>
+<section id="banana-conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="banana-conclusion">Banana conclusion</h2>
+<p>Data scientists at FiveThirtyEight administered a food frequency questionnaire. With 54 complete responses they found that people who ate bananas tended to score higher on the SAT verbal section than the SAT math section (𝑝−𝑣𝑎𝑙𝑢𝑒=0.0073). An article reporting the results of this study has the headline, “Eat more bananas to score higher on the SAT verbal section”.</p>
+<p>Explain why this title is misleading.</p>
+</section>
+<section id="new-question-banana-conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="new-question-banana-conclusion">New Question: Banana conclusion</h2>
+<p>Data scientists at FiveThirtyEight administered a food frequency questionnaire. They used a two-sample hypothesis test to analyze 54 responses, and found that people who ate bananas tended to score higher on the SAT verbal section than the SAT math section (𝑝−𝑣𝑎𝑙𝑢𝑒=0.0073). An article reporting the results of this study has the headline, “Eating bananas leads to higher scores on the SAT verbal section”.</p>
+<p>Select the option that best explains why this headline is misleading.</p>
+<ol type="a">
+<li><p>The sample size is too small to draw any conclusions.</p></li>
+<li><p>The headline makes a causal claim, but only correlation can be concluded from this analysis.</p></li>
+<li><p>The small p-value indicates no difference in scores on the SAT verbal section between people who eat bananas and people who do not.</p></li>
+<li><p>It does not make sense for there to be a correlation between eating bananas and scores on the SAT verbal section.</p></li>
+</ol>
+</section>
 
 </main>
 <!-- /main column -->
@@ -300,6 +318,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -334,7 +370,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -382,7 +422,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      return note.innerHTML;
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {

@@ -7,6 +7,7 @@ toc: TRUE
 ---
 
 ## Packages
+
 ```{r}
 #| warning: false
 #| message: false
@@ -21,7 +22,6 @@ library(mgcv)
 library(gridExtra)
 ```
 
-
 ## Storm paths
 
 The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?
@@ -30,20 +30,18 @@ The figure below shows a forecast after simulating 50 potential paths for a larg
 
 **Cons**:
 
--   Need distractors 
+-   Need distractors
 
-
-## New Question: Storm Paths 
+## New Question: Storm Paths
 
 The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?
 
 ![](images/storm.png)
 
-a. City a 
-b. City b
-c. The storm is equally likely to hit City a or City b
-d. Impossible to tell based on the graph alone
-
+a.  City a
+b.  City b
+c.  The storm is equally likely to hit City a or City b
+d.  Impossible to tell based on the graph alone
 
 ## Movie budgets 2
 
@@ -51,13 +49,13 @@ d. Impossible to tell based on the graph alone
 
 ![](images/movies2.png)
 
-**Cons**: 
+**Cons**:
 
--   Lots of overlapping data 
--   Too many plots 
--   Tough expectations to discern $R^2$s so close together 
--   Most selected graph actually has the smallest correlation 
--   Doesn't assess anything about linearity 
+-   Lots of overlapping data
+-   Too many plots
+-   Tough expectations to discern $R^2$s so close together
+-   Most selected graph actually has the smallest correlation
+-   Doesn't assess anything about linearity
 
 ```{r}
 #| echo: false
@@ -86,18 +84,16 @@ movies_2 |>
   summarize(rsq = cor(budget, gross)^2)
 ```
 
+## New Question: Shop sales
 
-## New Question: Shop sales 
-
-Suppose a data scientist was hired by to investigate the relationship between coffee sales and tea sales across three different shops. They set out and collected the total number of cups of coffee sold and the total number of cups of tea sold each day for 120 days for each shop. A scatterplot of these relationships, along with the fitted regression line, is shown for each of the three shops. Select the option that would produce the highest $R^2$ value. 
+Suppose a data scientist was hired by to investigate the relationship between coffee sales and tea sales across three different shops. They set out and collected the total number of cups of coffee sold and the total number of cups of tea sold each day for 120 days for each shop. A scatterplot of these relationships, along with the fitted regression line, is shown for each of the three shops. Select the option that would produce the highest $R^2$ value.
 
 ![](images/coffee.png)
 
-a. Shop 1 
-b. Shop 2 
-c. Shop 3 
-d. Impossible to tell based on the graph alone
-
+a.  Shop 1
+b.  Shop 2
+c.  Shop 3
+d.  Impossible to tell based on the graph alone
 
 $R^2$ values for the three plots above
 
@@ -212,3 +208,23 @@ p3 <- ggplot(data = rand_data2, aes(x = x, y = y)) +
 grid.arrange(p1,p3,p2 , nrow = 3)
 
 ```
+
+## Banana conclusion
+
+Data scientists at FiveThirtyEight administered a food frequency questionnaire. With 54 complete responses they found that people who ate bananas tended to score higher on the SAT verbal section than the SAT math section (𝑝−𝑣𝑎𝑙𝑢𝑒=0.0073). An article reporting the results of this study has the headline, “Eat more bananas to score higher on the SAT verbal section”.
+
+Explain why this title is misleading.
+
+## New Question: Banana conclusion
+
+Data scientists at FiveThirtyEight administered a food frequency questionnaire. They used a two-sample hypothesis test to analyze 54 responses, and found that people who ate bananas tended to score higher on the SAT verbal section than the SAT math section (𝑝−𝑣𝑎𝑙𝑢𝑒=0.0073). An article reporting the results of this study has the headline, “Eating bananas leads to higher scores on the SAT verbal section”.
+
+Select the option that best explains why this headline is misleading.
+
+a.  The sample size is too small to draw any conclusions.
+
+b.  The headline makes a causal claim, but only correlation can be concluded from this analysis.
+
+c.  The small p-value indicates no difference in scores on the SAT verbal section between people who eat bananas and people who do not.
+
+d.  It does not make sense for there to be a correlation between eating bananas and scores on the SAT verbal section.
