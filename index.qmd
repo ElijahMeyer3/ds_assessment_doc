@@ -258,7 +258,9 @@ kbl(key)
 ```
 
 
-## Distribution of responses
+## Distribution of responses 
+
+#### plot
 
 ```{webr-r}
 #| edit: false
@@ -286,6 +288,20 @@ create_barplot <- function(data, x_var) {
   return(p)
 }
 
+create_frequency_table <- function(data, variable) {
+
+  # Enforce data to be a tibble
+  data <- as_tibble(data)
+
+  # Use enquo for tidy evaluation of the variable column
+  variable_quo <- enquo(variable)
+
+  # Calculate counts (defaulting to no sorting and no percentage calculation)
+  freq_table <- data %>%
+    count(!!variable_quo, name = "Count")
+
+  return(freq_table)
+}
 
 ```
 
@@ -293,16 +309,9 @@ create_barplot <- function(data, x_var) {
 create_barplot(assessment, storm_paths)
 ```
 
+#### table 
 
-## Activity_1_1
-
-Formatting issues with plot. Here is a table of response for this often missed question below.
-
-```{r}
-#| echo: false
-assessment |>
-  group_by(activity_journal_1_1) |>
-  summarise(n = n()) |>
-  kbl()
+```{webr-r}
+create_frequency_table(assessment, storm_paths)
 ```
 
