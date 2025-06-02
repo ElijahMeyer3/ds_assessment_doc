@@ -52,18 +52,17 @@ Pilot data from the Spring 2025 academic calendar from Duke University
 
 # data with question information
 #assessment <- read_csv("data/anonymized-pilot-4-24.csv") |>
-assessment <- read_csv("data/anonymized-pilot-2025.csv") |>
+#assessment <- read_csv("data/anonymized-pilot-2025.csv") |>
+assessment <- read_csv("data/ds_assessment_2025_April_14.csv") |>
   janitor::clean_names() |>
   mutate(
-    progress = as.numeric(progress),
     duration_in_seconds = as.numeric(duration_in_seconds),
     finished = as.logical(finished),
     #he_said_she_said_1_3 = as.logical(he_said_she_said_1_3),
     #he_said_she_said_2_3 = as.logical(he_said_she_said_2_3),
     #he_said_she_said_3_3 = as.logical(he_said_she_said_3_3),
     ) |>
-  filter(consent == "Yes, I agree to allow my responses to the assessment as research data.",
-         progress > 10)
+  filter(consent == "Yes, I agree to allow my responses to the assessment as research data.")
 
 assessment <- assessment |>
   rename("movie_budgets_1b" = q47,
@@ -91,10 +90,10 @@ assessment <- assessment[-1,] #remove test run by me
 assessment <- assessment |> 
   select(-c(1:18, ncol(assessment)))
 
-
 #mc <- assessment |> 
 #  dplyr::select(storm_paths, contains("realty"), contains("movie_budget"), he_said_she_said_1_3, contains("screening"), contains("website"), # contains("build"), contains("confidentiali"))
 ```
+
 
 There are `r nrow(assessment)` participants that opted into our study. All who opted in finished.
 
