@@ -1,8 +1,14 @@
 ---
 title: "ds assessment report"
-format: html
-editor: visual
-toc: TRUE
+format: live-html
+webr:
+  packages: 
+    - tidyverse
+    - scales
+  cell-options:
+    autorun: false
+  resources:
+    - https://raw.githubusercontent.com/ElijahMeyer3/ds_assessment_doc/main/data/clean_pilot.csv
 ---
 
 ```{r}
@@ -23,7 +29,7 @@ library(DT)
 
 # Question assignments
 
-| Team member           | Question assignment |
+| Team member           | TODOs |
 |-----------------------|---------------------|
 | Mine Çetinkaya-Rundel |                     |
 | Elijah Meyer          |                     |
@@ -33,19 +39,9 @@ library(DT)
 | Andy Zieffler         |                     |
 | Chelsey Legacy        |                     |
 
-# Data analysis instructions
+# Data analysis
 
-Below is a draft to be updated with the team.
-
-Thematic analysis
-
-- code the different statements to identify similar characteristics among answers
-
-- identify patterns among codes to create emergent themes (named groups)
-
-- define themes created 
-
-Suggested to do this independently and compare results to help establish evidence of validity (Consensus coding).
+Pilot data from the Spring 2025 academic calendar from Duke University 
 
 # Data
 
@@ -55,7 +51,8 @@ Suggested to do this independently and compare results to help establish evidenc
 #| warning: false
 
 # data with question information
-assessment <- read_csv("data/anonymized-pilot-4-24.csv") |>
+#assessment <- read_csv("data/anonymized-pilot-4-24.csv") |>
+assessment <- read_csv("data/anonymized-pilot-2025.csv") |>
   janitor::clean_names() |>
   mutate(
     progress = as.numeric(progress),
@@ -68,11 +65,38 @@ assessment <- read_csv("data/anonymized-pilot-4-24.csv") |>
   filter(consent == "Yes, I agree to allow my responses to the assessment as research data.",
          progress > 10)
 
-mc <- assessment |> 
-  dplyr::select(storm_paths, contains("realty"), contains("movie_budget"), he_said_she_said_1_3, he_said_she_said_2_3, he_said_she_said_3_3, contains("screening"), contains("website"), contains("build"), contains("confidentiali"))
+assessment <- assessment |>
+  rename("movie_budgets_1b" = q47,
+         "movie_budgets_1c" = q48, 
+         "shop" = movie_budgets_2,
+         "covid_map_1" = covid_map_1_2,
+         "covid_map_2" = q49, 
+         "covid_map_3" = q50,
+         "covid_map_4" = q51,
+         "att_check" = q53,
+         "covid_map_5" = q52,
+         "he_said_she_said_1" = he_said_she_said_1_3,
+         "he_said_she_said_2" = q54,
+         "he_said_she_said_3" = q55,
+         "build_a_plot_1" = build_a_plot, 
+         "build_a_plot_2" = q61,
+         "blocks_1" = q56,
+         "blocks_2" = q57, 
+         "realty_tree_1" = realty_tree_1_2,
+         "realty_tree_2" = q58, 
+         ) 
+
+assessment <- assessment[-1,] #remove test run by me
+
+assessment <- assessment |> 
+  select(-c(1:18, ncol(assessment)))
+
+
+#mc <- assessment |> 
+#  dplyr::select(storm_paths, contains("realty"), contains("movie_budget"), he_said_she_said_1_3, contains("screening"), contains("website"), # contains("build"), contains("confidentiali"))
 ```
 
-There are `r nrow(assessment) - 2` participants that opted into our study. Of the `r nrow(assessment) - 2` participants, `r sum(assessment$finished, na.rm = T)` made it to the last question of the survey.
+There are `r nrow(assessment)` participants that opted into our study. All who opted in finished.
 
 ::: {.callout-caution collapse="true"}
 ## Missing observations
@@ -85,21 +109,17 @@ set.cutoff.correct <- .5
 
 Below are the percentages of missing observations by question. Questions that have at least `r set.cutoff` percent missing are highlighted in red.
 
-Note: **he_said_she_said 1 & 2** are suppose to be missing.
-
-Note: **he_said_she_said 3** will be missing if students answered this question incorrectly.
-
 ```{r}
 #| echo: false
 percent_missing <- colSums(
   is.na(
     assessment |>
-      select(17:ncol(assessment)) 
+      select(1:ncol(assessment)) 
   )) / nrow(assessment)
 
 
 pct_missing <- assessment |>
-  select(17:ncol(assessment)) |>
+  select(1:ncol(assessment)) |>
    summarise_all(~ sum(is.na(.))) / nrow(assessment) 
 
 p <- as.data.frame(pct_missing)
@@ -124,7 +144,16 @@ p |>
 ::: {.callout-caution collapse="true"}
 ## Percent correct - multiple choice
 
-Below is a table that shares the percentage of correct responses across `r nrow(data)` students. Questions are highlighted in red to indicate a percentage less than `r set.cutoff.correct`.
+Below is a table that shares the percentage of correct responses across `r nrow(data)` students. 
+
+Note: movie_wrangling_3_6 should be answer 0, but answer 0 was not presented on assessment.
+
+
+    START_WITH(the Movies table) then
+
+       KEEP_ROWS_WHERE(the season value is Fall) then
+
+        COUNT(the number of rows) WHERE( best_picture value is Yes)
 
 ```{r}
 #| echo: false
@@ -133,13 +162,15 @@ Below is a table that shares the percentage of correct responses across `r nrow(
 
 #names(mc) <- mc[1,] |> unlist() |> unname() #put question as name
 
-mc2 <- mc |>
+mc2 <- assessment |>
   mutate(id = 1:n()) |>
-  pivot_longer(1:ncol(mc), names_to = "question", values_to = "answer")
+  pivot_longer(1:ncol(assessment), names_to = "question", values_to = "answer") 
+
+question <- unique(mc2$question)[1:28]
 
 key <- tibble(
-  question = unique(mc2$question),
-  correct = c( "City a", "Can't be determined from the information given.", "$151,424", "Plot A", "Plot D", "Plot D", "Plot B,Plot D", "Horror", "FALSE", "TRUE", "Need additional information to determine this:", "", "", "", "", "Valid", "Cannot determine from this plot", "Cannot determine from this plot", "County boundaries,Unemployment rate in each county", "None of the above")
+  question = question,
+  correct = c( "City a", "Plot C", "Plot A", "Plot C", "Shop 1", "The headline makes a causal claim, but only a relationship can be concluded from this analysis.", "South", "CA", "FALSE", "FALSE", "Option 2", "No, we can not conclude a difference in total number of COVID cases. There is not enough information given on this graph to make the comparison.", "False", "True", "Need additional information to determine this", "FALSE", "FALSE",   "C", "False negative rate is larger", "$151,424", "$501,876", "There is evidence that the red version of the website will generate more clicks on the “Store” link if there are 50 users visiting the website.", "professory in the photos from the sciences are primarily white and male in lab coats, which is not representative of science professory today.", "Student’s class year", "One of the columns will be exercise type; a categorical variable with levels such as Pilates, Weights, Walk, etc." , "Use if-else statements" , "2", "0")
 )
 
 tbl <- mc2 |>
@@ -152,7 +183,7 @@ tbl <- mc2 |>
       answer == correct ~ 1,
       TRUE ~ 0
     ),
-    mc_question_num = rep(1:20, 209) #19 = MC Q | last value needs to be sample size
+    mc_question_num = rep(1:29, 226) #19 = MC Q | last value needs to be sample size
   ) |> 
   group_by(question, mc_question_num) %>%
   summarize(pct_correct = mean(correct_answer)) |>
@@ -165,1328 +196,114 @@ tbl |>
   kbl(digits = 2) |>
   kable_styling() |>
   row_spec(which(tbl$pct_correct <=.5), bold = T, color = "white", background = "tomato")
-
-build_total_pct <- assessment |>
-  select(build_a_plot) |>
-  filter(build_a_plot %in% c("County boundaries,Unemployment rate in each county" , "County boundaries,Number of adults living in each county,Number of unemployed adults living in each county")) |>
-  nrow() / nrow(assessment) |>
-  round(digits = 2)
-
 ```
 
-Note: The question **build_a_plot** was graded using the solution: *"County boundaries,Unemployment rate in each county"*. If we include the solution *County boundaries, Number of adults living in each county, Number of unemployed adults living in each county*, the percent correct is `r build_total_pct`.
+
 :::
 
 ## Time spent
 
-The average time it took to complete this survey was `r round(mean(assessment$duration_in_seconds, na.rm = T)/60, 2)` minutes, with `r sum(assessment$duration_in_seconds/60 > 60, na.rm = T)` students taking more than 60 minutes to complete the assessment, and `r sum(assessment$duration_in_seconds/60 > 120, na.rm = T)` students taking more than 120 minutes to complete the assessment.
+Here are common student words for the question "How much time did you spend on this assessment?"
+
+```{r}
+#| echo: false
+
+library(dplyr)
+library(tidytext) # For unnest_tokens
+library(stringr)  # For string manipulation (optional, often loaded with tidyverse)
+
+get_most_common_words <- function(data, text_column, n = 10, remove_stopwords = TRUE) {
+  # Enforce data to be a tibble
+  data <- as_tibble(data)
+
+  # Quosure for tidy evaluation of the text_column
+  text_column_quo <- enquo(text_column)
+
+  word_counts <- data %>%
+    # Select only the text column
+    select(!!text_column_quo) %>%
+    # Convert to a character vector (unnest_tokens works best with simple character input)
+    pull(!!text_column_quo) %>%
+    # Convert to a tibble of words, one word per row
+    tibble(text = .) %>%
+    unnest_tokens(word, text)
+
+  new_stop_word <- data.frame(word = "minutes", lexicon = "custom")
+  new_stop_word2 <- data.frame(word = "min", lexicon = "custom")
+  new_stop_word3 <- data.frame(word = "mins", lexicon = "custom")
+  stop_words_updated <- rbind(stop_words, new_stop_word, new_stop_word2, new_stop_word3)
+  # Optionally remove common English stop words
+  if (remove_stopwords) {
+    word_counts <- word_counts %>%
+      anti_join(stop_words_updated, by = "word")
+  }
+
+  # Count word frequencies
+  most_common_words <- word_counts %>%
+    count(word, sort = TRUE) %>%
+    head(n)
+
+  return(most_common_words)
+}
+
+
+get_most_common_words(assessment, time_spent, n = 10)
+
+```
+
+## Key
+
+```{r}
+#| echo: false
+kbl(key)
+```
+
+
+## Distribution of responses
+
+```{webr-r}
+#| edit: false
+#| output: false
+
+assessment <- read_csv("clean_pilot.csv")
+
+create_barplot <- function(data, x_var) {
+
+  # Enforce data to be a tibble for consistent piping
+  data <- as_tibble(data)
+
+  # Use enquo for tidy evaluation of column names
+  x_var_quo <- enquo(x_var)
+
+  # Basic bar plot structure
+  p <- ggplot(data, aes(x = !!x_var_quo)) +
+    geom_bar() + # No fill aesthetic or explicit fill_var
+    labs(x = as_label(x_var_quo), # Default x-label from variable name
+         y = "Count",             # Default y-label
+         title = NULL) +          # No title by default
+    theme_minimal()     + 
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))# Apply a clean theme
+
+  return(p)
+}
+
+
+```
+
+```{webr-r}
+create_barplot(assessment, storm_paths)
+```
+
+
+## Activity_1_1
+
+Formatting issues with plot. Here is a table of response for this often missed question below.
 
 ```{r}
 #| echo: false
 assessment |>
-  ggplot(
-    aes(x = duration_in_seconds / 60)
-  ) +
-  geom_density() +  
-  theme_classic() + 
-  labs( 
-    x = "minutes spent",
-    y = "",
-    title = "density of time spent")
-
-summary(assessment$duration_in_seconds / 60)
+  group_by(activity_journal_1_1) |>
+  summarise(n = n()) |>
+  kbl()
 ```
-
-## Student checks
-
-```{r}
-#| echo: false
-
-pass <- assessment |>
-  select(contains("attention")) |>
-  filter(stringr::str_detect(attention_check_1_2, "passing"),
-        attention_check_2_2 == "$262,972") |>
-  nrow()
-
-fast <- assessment |>
-  filter(duration_in_seconds <= 600) |>
-  nrow()
-```
-
-`r nrow(assessment) - pass` students failed at least one of the attention checks in the survey. `r fast` students completed the assessment in 10 minutes or less. These data have been filtered out for this report.
-
-```{r}
-#| echo: false
-
-assessment_clean <- assessment |>
-  filter(stringr::str_detect(attention_check_1_2, "passing") &
-        attention_check_2_2 == "$262,972" &
-        duration_in_seconds > 600)
-```
-
-# Questions
-
-## Storm paths
-
-The figure below shows a forecast after simulating 50 potential paths for a large storm. The two points (a) and (b) represent two cities. Which city is more likely to be hit by the storm?
-
-![](images/storm.png)
-
-**Question**: Which city is more likely to be hit by the storm?
-
-```{r}
-#| echo: false
-s1 <- assessment_clean |>
-  select(storm_paths) |> # go through and remove slice do not need them
-  na.omit() |> #pick back up here 4/16
-  count(storm_paths) |>
-  mutate(prop = round(n/sum(n),2))
-
-
-color.me.storm <- which(s1$storm_paths == "City a")
-
-s1 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.storm, bold = T, color = "white", background = "green") 
-  
-
-s2 <- assessment_clean |>
-  select(storm_paths) |>
-  count(storm_paths) |>
-  mutate(prop = round(n/sum(n),2)) 
-
-s2 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.storm, bold = T, color = "white", background = "green")
-  
-```
-
-### Explain
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_storm <- assessment_clean |>
-  select(storm_paths_explana) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_storm` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(storm_paths, storm_paths_explana) |>
-  filter(is.na(storm_paths) != T & is.na(storm_paths_explana) != T) |>
-  arrange(storm_paths) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Movie budgets
-
-A data scientist at IMDb has been given a dataset comprised of the revenues and budgets for 2,349 movies made between 1986 and 2016. Suppose they want to compare several distributional features of the budgets among four different genres---Horror, Drama, Action, and Animation. To do this, they create the following plots.
-
-![](images/movie.png)
-
-**Question**: Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.
-
-**Note**: Combinations of answers that do not appear in the table were not selected by students.
-
-### Mean
-
-```{r}
-#| echo: false
-s3 <- assessment_clean |>
-  select(movie_budgets_1_1) |>
-  na.omit() |>
-  count(movie_budgets_1_1) |>
-  mutate(prop = round(n/sum(n),2))
-
-
-color.me.movie <- which(s3$movie_budgets_1_1 == "Plot A")
-
-s3 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.movie, bold = T, color = "white", background = "green") 
-  
-
-s4 <- assessment_clean |>
-  select(movie_budgets_1_1) |>
-  count(movie_budgets_1_1) |>
-  mutate(prop = round(n/sum(n),2)) 
-
-s4 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.movie, bold = T, color = "white", background = "green")
-  
-```
-
-### Median
-
-```{r}
-#| echo: false
-s5 <- assessment_clean |>
-  select(movie_budgets_1_2) |>
-  na.omit() |>
-  count(movie_budgets_1_2) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.movie2 <- which(s5$movie_budgets_1_2 == "Plot D")
-
-s5 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.movie2, bold = T, color = "white", background = "green") 
-  
-
-s6 <- assessment_clean |>
-  select(movie_budgets_1_2) |>
-  count(movie_budgets_1_2) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s6 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.movie2, bold = T, color = "white", background = "green")
-  
-```
-
-### IQR
-
-```{r}
-#| echo: false
-s7 <- assessment_clean |>
-  select(movie_budgets_1_3) |>
-  na.omit() |>
-  count(movie_budgets_1_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.movie3 <- which(s7$movie_budgets_1_3 == "Plot D")
-
-s7 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.movie2, bold = T, color = "white", background = "green") 
-  
-
-s8 <- assessment_clean |>
-  select(movie_budgets_1_3) |>
-  count(movie_budgets_1_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s8 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.movie2, bold = T, color = "white", background = "green")
-  
-```
-
-### Shape
-
-```{r}
-#| echo: false
-s9 <- assessment_clean |>
-  select(movie_budgets_1_4) |>
-  na.omit() |>
-  count(movie_budgets_1_4) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.movie4 <- which(s9$movie_budgets_1_4 == "Plot B,Plot D")
-
-s9 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.movie4, bold = T, color = "white", background = "green") 
-  
-
-s10 <- assessment_clean |>
-  select(movie_budgets_1_4) |>
-  count(movie_budgets_1_4) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-s10 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.movie4, bold = T, color = "white", background = "green")
-  
-```
-
-## Movie budgets 2
-
-**Question**: For each genre, the data scientist also fitted a regression line to model the relationship between movies' budgets and their revenues. A scatterplot of this relationship, along with the fitted regression line, is shown for each of the four genres below. For which genre would the fitted regression model produce the highest $R^2$ value?
-
-![](images/movies2.png)
-
-```{r}
-#| echo: false
-s11 <- assessment_clean |>
-  select(movie_budgets_2) |>
-  na.omit() |>
-  count(movie_budgets_2) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.movie5 <- which(s11$movie_budgets_2 == "Horror")
-
-s11 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.movie5, bold = T, color = "white", background = "green") 
-  
-
-s12 <- assessment_clean |>
-  select(movie_budgets_2) |>
-  count(movie_budgets_2) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s12 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.movie5, bold = T, color = "white", background = "green")
-  
-```
-
-## Application Screening
-
-**Question**: You are working on a team that is making a deterministic model to quickly screen through applications for a new position at the company. Based on employment laws, your model may not include variables such as age, race, and gender, which could be potentially discriminatory.
-
-Your colleague suggests including a rule that eliminates candidates with more than 20 years of previous work experience, because they may have high salary expectations. Are there ethical implications of using this variable to select candidates?
-
-Explain your answer.
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_app <- assessment_clean |>
-  select(application_screenin) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_app` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(application_screenin) |>
-  filter(is.na(application_screenin) != T) |>
-  arrange(application_screenin) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Banana conclusions
-
-**Question**: Data scientists at FiveThirtyEight administered a food frequency questionnaire. With 54 complete responses they found that people who ate bananas tended to score higher on the SAT verbal section than the SAT math section ($p-value =0.0073$). An article reporting the results of this study has the headline, "Eat more bananas to score higher on the SAT verbal section".
-
-Explain why this title is misleading.
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_ban <- assessment_clean |>
-  select(banana_conclusions) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_ban` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(banana_conclusions) |>
-  filter(is.na(banana_conclusions) != T) |>
-  arrange(banana_conclusions) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Covid map
-
-**Question**: The visualization below displays the 14-day rolling average of new COVID-19 cases January 1 - August 31, 2021 in the United States. Each plot represents a state or Washington, D.C., and is labeled using the state's abbreviation (e.g., MA = Massachusetts). The shaded area under each curve represents the increase in new cases since the state's minimum point in 2021. This is a recreation of a similar plot that originally appeared in the New York Times.
-
-![](images/covid_map.png)
-
-What do we learn from this plot about COVID-19 cases in the US?
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_vid <- assessment_clean |>
-  slice(-c(1:2)) |>
-  select(covid_map_1_2) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_vid` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(covid_map_1_2) |>
-  filter(is.na(covid_map_1_2) != T) |>
-  arrange(covid_map_1_2) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Covid map 2
-
-**Question**: The visualization below displays the 14-day rolling average of new COVID-19 cases January 1 - August 31, 2021 in the United States. Each plot represents a state or Washington, D.C., and is labeled using the state's abbreviation (e.g., MA = Massachusetts). The shaded area under each curve represents the increase in new cases since the state's minimum point in 2021. This is a recreation of a similar plot that originally appeared in the New York Times.
-
-![](images/covid_map.png)
-
-Compare KY (Kentucky) in the South region to CA (California) in the West region.Based on this plot, can we conclude there was a difference in overall number of COVID cases in KY and CA in August 2021? Explain.
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_vid2 <- assessment_clean |>
-  select(covid_map_2_2) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_vid2` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(covid_map_2_2) |>
-  filter(is.na(covid_map_2_2) != T) |>
-  arrange(covid_map_2_2) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Medical screening
-
-Medical screening tests are not 100% accurate. It's possible to have a disease but not test positive or not have a disease but test positive for it. The following three visualizations display the outcomes of a medical screening test with a sensitivity (true positive rate) of 78.2% and specificity (true negative rate) of 79.6% in a population where 10% of the individuals have the disease.
-
-We are also interested in the false positive (individuals classified as with a disease, who don't actually have it) and false negative (individuals classified as without a disease, but who do actually have it) rates.
-
-![](images/medical.png)
-
-**Question**: Fill in the following table by placing a checkmark in the cells corresponding to the attributes of the data that can be determined by examining each of the plots.
-
-**Note**: Combinations of answers that do not appear in the table were not selected by students
-
-### Sensitivity
-
-```{r}
-#| echo: false
-s13 <- assessment_clean |>
-  select(disease_screening_1) |>
-  na.omit() |>
-  count(disease_screening_1) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-#color.me.dis <- which(s13$disease_screening_1 == "")
-
-s13 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() 
-  #row_spec(color.me.dis, bold = T, color = "white", background = "green") 
-  
-
-s14 <- assessment_clean |>
-  slice(-c(1:2)) |>
-  select(disease_screening_1) |>
-  count(disease_screening_1) |>
-  mutate(prop = round(n/sum(n),2)) 
-
-s14 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling()
-  #row_spec(color.me.dis, bold = T, color = "white", background = "green")
-  
-```
-
-### Specificity
-
-```{r}
-#| echo: false
-s15 <- assessment_clean |>
-  select(disease_screening_2) |>
-  na.omit() |>
-  count(disease_screening_2) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-#color.me.dis <- which(s15$disease_screening_2 == "")
-
-s15 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() 
-  #row_spec(color.me.dis, bold = T, color = "white", background = "green") 
-  
-
-s16 <- assessment_clean |>
-  select(disease_screening_2) |>
-  count(disease_screening_2) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s16 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() 
-  #row_spec(color.me.dis, bold = T, color = "white", background = "green")
-  
-```
-
-### False positive rate
-
-```{r}
-#| echo: false
-s17 <- assessment_clean |>
-  select(disease_screening_3) |>
-  na.omit() |>
-  count(disease_screening_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-#color.me.dis <- which(s17$disease_screening_3 == "")
-
-s17 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() 
-  #row_spec(color.me.dis, bold = T, color = "white", background = "green") 
-  
-
-s18 <- assessment_clean |>
-  select(disease_screening_3) |>
-  count(disease_screening_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s18 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() 
-  #row_spec(color.me.dis, bold = T, color = "white", background = "green")
-  
-```
-
-### False negative rate
-
-```{r}
-#| echo: false
-s19 <- assessment_clean |>
-  select(disease_screening_4) |>
-  na.omit() |>
-  count(disease_screening_4) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-# color.me.dis <- which(s19$disease_screening_4 == "")
-
-s19 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() 
-  #row_spec(color.me.dis, bold = T, color = "white", background = "green") 
-  
-
-s20 <- assessment_clean |>
-  select(disease_screening_4) |>
-  count(disease_screening_4) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s20 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() 
-  #row_spec(color.me.dis, bold = T, color = "white", background = "green")
-  
-```
-
-## He said she said
-
-**Question** For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
-
-![](images/heshe.png)
-
-Men in Austen's novels are more likely to have 'dared', 'expected', and 'ran' than women.
-
-```{r}
-#| echo: false
-s21 <- assessment_clean |>
-  select(he_said_she_said_1_3) |>
-  na.omit() |>
-  count(he_said_she_said_1_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.he <- which(s21$he_said_she_said_1_3 == "FALSE")
-
-s21 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.he, bold = T, color = "white", background = "green") 
-  
-
-s22 <- assessment_clean |>
-  select(he_said_she_said_1_3) |>
-  count(he_said_she_said_1_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s22 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.he, bold = T, color = "white", background = "green")
-  
-```
-
-::: {.callout-caution collapse="true"}
-## Need additional information to determine this (text)
-
-```{r}
-#| echo: false
-na_he1 <- assessment_clean |>
-  select(he_said_she_said_1_3_3_text) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(he_said_she_said_1_3_3_text) |>
-  filter(is.na(he_said_she_said_1_3_3_text) != T) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## He said she said 2
-
-**Question** For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
-
-![](images/heshe.png)
-
-Women in Austen's novels are more likely to have 'remembered', 'felt', and 'cried' than men.
-
-```{r}
-#| echo: false
-s23 <- assessment_clean |>
-  select(he_said_she_said_2_3) |>
-  na.omit() |>
-  count(he_said_she_said_2_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.he2 <- which(s23$he_said_she_said_2_3 == "TRUE")
-
-s23 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.he2, bold = T, color = "white", background = "green") 
-  
-
-s24 <- assessment_clean |>
-  select(he_said_she_said_2_3) |>
-  count(he_said_she_said_2_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s24 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.he2, bold = T, color = "white", background = "green")
-  
-```
-
-::: {.callout-caution collapse="true"}
-## Need additional information to determine this (text)
-
-```{r}
-#| echo: false
-na_he2 <- assessment_clean |>
-  select(he_said_she_said_2_3_3_text) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(he_said_she_said_2_3_3_text) |>
-  filter(is.na(he_said_she_said_2_3_3_text) != T) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## He said she said 3
-
-**Question** For each of the following items, indicate whether the statement is TRUE, FALSE, or whether you would need additional information to determine this. If you need additional information to make that determination, indicate what else you would need.
-
-![](images/heshe.png)
-
-Women in Austen's novels are more likely to have 'remembered' than 'feared'.
-
-```{r}
-#| echo: false
-s25 <- assessment_clean |>
-  select(he_said_she_said_3_3) |>
-  na.omit() |>
-  count(he_said_she_said_3_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.he3 <- which(s25$he_said_she_said_3_3 == "Need additional information to determine this:")
-
-s25 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.he3, bold = T, color = "white", background = "green") 
-  
-
-s26 <- assessment_clean |>
-  select(he_said_she_said_3_3) |>
-  count(he_said_she_said_3_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s26 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.he3, bold = T, color = "white", background = "green")
-  
-```
-
-::: {.callout-caution collapse="true"}
-## Need additional information to determine this (text)
-
-```{r}
-#| echo: false
-na_he3 <- assessment_clean |>
-  select(he_said_she_said_3_3_3_text) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(he_said_she_said_3_3_3_text) |>
-  filter(is.na(he_said_she_said_3_3_3_text) != T) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Build a plot
-
-The following is an intensity map of the unemployment rate among adults in the counties in the United States (based on data from 2019).
-
-![](images/build.png)
-
-**Question**: Indicate which of the following data you need to recreate this map: (Select all that apply.)
-
-**Note** Answers or combinations of answers that do not appear in the plot were not selected by students.
-
-```{r}
-#| echo: false
-s27 <- assessment_clean |>
-  select(build_a_plot) |>
-  na.omit() |>
-  count(build_a_plot) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.build <- which(s27$build_a_plot == c("County boundaries,Unemployment rate in each county") | s27$build_a_plot == c("County boundaries,Number of adults living in each county,Number of unemployed adults living in each county"))
-
-s27 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.build, bold = T, color = "white", background = "green") 
-  
-
-s28 <- assessment_clean |>
-  select(build_a_plot) |>
-  count(build_a_plot) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s28 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.build, bold = T, color = "white", background = "green")
-  
-```
-
-## Realty tree
-
-A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area.
-
-![](images/tree.png)
-
-**Question**: What price would the tree predict for a house with $3200 ft.^2$ of living area, 1.5 bathrooms, and 1 fireplace?
-
-```{r}
-#| echo: false
-s29 <- assessment_clean |>
-  select(realty_tree_1_2) |>
-  na.omit() |>
-  count(realty_tree_1_2) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.tree <- which(s29$realty_tree_1_2 == "Can't be determined from the information given.")
-
-s29 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.tree, bold = T, color = "white", background = "green") 
-  
-
-s30 <- assessment_clean |>
-  slice(-c(1:2)) |>
-  select(realty_tree_1_2) |>
-  count(realty_tree_1_2) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s30 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.tree, bold = T, color = "white", background = "green")
-  
-```
-
-## Realty tree 2
-
-A realtor has trained a regression tree to predict the price of a house from features such as number of bedrooms, number of bathrooms, number of fireplaces, and size of the living area.
-
-![](images/tree.png)
-
-**Question**: What price would the tree predict for a house with 1200 ft.$^2$ of living area and 1.5 bathrooms?
-
-```{r}
-#| echo: false
-s31 <- assessment_clean |>
-  select(realty_tree_2_2) |>
-  na.omit() |>
-  count(realty_tree_2_2) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.tree2 <- which(s31$realty_tree_2_2 == "$151,424")
-
-s31 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.tree2, bold = T, color = "white", background = "green") 
-  
-
-s32 <- assessment_clean |>
-  select(realty_tree_2_2) |>
-  count(realty_tree_2_2) |>
-  mutate(prop = round(n/sum(n),2)) 
-
-s32 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.tree2, bold = T, color = "white", background = "green")
-```
-
-## Website testing
-
-An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
-
-![](images/website.png)
-
-Indicate whether each of the following conclusions are valid:
-
-**Question**: Over time the company is getting more returning users regardless of the version of the website.
-
-```{r}
-#| echo: false
-s33 <- assessment_clean |>
-  select(website_testing_1_3) |>
-  na.omit() |>
-  count(website_testing_1_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.web <- which(s33$website_testing_1_3 == "Valid")
-
-s33 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.web, bold = T, color = "white", background = "green") 
-  
-
-s34 <- assessment_clean |>
-  select(website_testing_1_3) |>
-  count(website_testing_1_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s34 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.web, bold = T, color = "white", background = "green")
-```
-
-## Website training 2
-
-An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
-
-![](images/website.png)
-
-Indicate whether each of the following conclusions are valid:
-
-**Question**: On the 31st day, the blue version of the website is expected to have higher number of returning users.
-
-```{r}
-#| echo: false
-s34 <- assessment_clean |>
-  select(website_testing_2_3) |>
-  na.omit() |>
-  count(website_testing_2_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.web2 <- which(s34$website_testing_2_3 == "Cannot determine from this plot")
-
-s34 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.web2, bold = T, color = "white", background = "green") 
-  
-
-s35 <- assessment_clean |>
-  select(website_testing_2_3) |>
-  count(website_testing_2_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s35 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.web2, bold = T, color = "white", background = "green")
-```
-
-## Website testing 3
-
-An e-commerce company is working on their website design and is interested in knowing whether having the website mainly in blue or red would lead to better business outcomes. One outcome they are measuring is the number of returning users to the website. They design two versions of the website one in blue and the other in red. A random half of the visitors see the website in blue and the other half see it in red. The plot shows the number of returning users per day for the two different versions of the website.
-
-![](images/website.png)
-
-Indicate whether each of the following conclusions are valid:
-
-**Question**: On the 60th day, the blue version of the website is expected to have higher number of returning users.
-
-```{r}
-#| echo: false
-s36 <- assessment_clean |>
-  select(website_testing_3_3) |>
-  na.omit() |>
-  count(website_testing_3_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.web3 <- which(s36$website_testing_3_3 == "Cannot determine from this plot")
-
-s36 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.web3, bold = T, color = "white", background = "green") 
-  
-
-s37 <- assessment_clean |>
-  select(website_testing_3_3) |>
-  count(website_testing_3_3) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s37 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.web3, bold = T, color = "white", background = "green")
-```
-
-## Image recognition
-
-A data science student wants to create an image recognition algorithm to identify whether a university professor belongs to a department in the sciences or not. To do this, she collects data by scraping several university photo archives of university faculty. She labels faculty in the photos as "Sciences" or "Not sciences". The images below depict a small representative sample of her data.
-
-![](images/image.png)
-
-**Question**: The data science student plans to use these photos of current university faculty to predict whether they are scientists. What concerns might you have about the predictions from this algorithm?
-
-Explain:
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_image <- assessment_clean |>
-  select(image_recognition1_1) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_image` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(image_recognition1_1) |>
-  filter(is.na(image_recognition1_1) != T) |>
-  arrange(image_recognition1_1) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Data confidential
-
-**Question**: A newspaper reports on the results of a survey from a small (\<2000 student) university. The university agrees to have the data released to the public so long as the students' identities and academic standing information are kept confidential. Select the safe combination of variables that are unlikely to identify any individual
-
-```{r}
-#| echo: false
-s38 <- assessment_clean |>
-  select(data_confidentiali1_1) |>
-  na.omit() |>
-  count(data_confidentiali1_1) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-
-color.me.data <- which(s38$data_confidentiali1_1 == "None of the above")
-
-s38 |> 
-  kable(booktabs = T , caption = "Table without NAs") |>
-  kable_styling() |>
-  row_spec(color.me.data, bold = T, color = "white", background = "green") 
-  
-
-s39 <- assessment_clean |>
-  select(data_confidentiali1_1) |>
-  count(data_confidentiali1_1) |>
-  mutate(prop = round(n/sum(n),2)) |>
-  arrange(desc(prop))
-
-s39 |>
-  kable(booktabs = T, caption = "Table with NAs") %>%
-  kable_styling() %>%
-  row_spec(color.me.data, bold = T, color = "white", background = "green")
-```
-
-## Activity journal
-
-Below is data that was recorded in an activity journal
-
-![](images/journal.png)
-
-**Question**: A data scientist reformats the data into a table so that each variable represented in the data is recorded in a single column. Describe what each of the columns of this table will contain, as well as what each row or observation of the table will represent.
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_act <- assessment_clean |>
-  select(activity_journal_1_1) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_act` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(activity_journal_1_1) |>
-  filter(is.na(activity_journal_1_1) != T) |>
-  arrange(activity_journal_1_1) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Movie wrangling
-
-The table below provides data about 10 movies released in the United States. It provides data on the movie's title (title), the movie's director (director), the date the movie was released (release_date), the season the movie was released (season), the worldwide gross intake in U.S. dollars (gross), the cleaned version of the worldwide gross intake in U.S. dollars (gross_clean), and whether or not the movie won the Best Picture Oscar (best_picture).
-
-![](images/wrangle.png)
-
-**Question**: Describe a process that you could use to generate the data in the season column using the information in the release_date column.
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_wrang <- assessment_clean |>
-  select(movie_wrangling_1_6) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_wrang` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(movie_wrangling_1_6) |>
-  filter(is.na(movie_wrangling_1_6) != T) |>
-  arrange(movie_wrangling_1_6) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Movie wrangling 2
-
-The table below provides data about 10 movies released in the United States. It provides data on the movie's title (title), the movie's director (director), the date the movie was released (release_date), the season the movie was released (season), the worldwide gross intake in U.S. dollars (gross), the cleaned version of the worldwide gross intake in U.S. dollars (gross_clean), and whether or not the movie won the Best Picture Oscar (best_picture).
-
-![](images/wrangle.png)
-
-**Question**: Describe a process that you could use to generate the data in the gross_clean column using the information in the gross column.
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_wrang2 <- assessment_clean |>
-  select(movie_wrangling_2_6) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_wrang2` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(movie_wrangling_2_6) |>
-  filter(is.na(movie_wrangling_2_6) != T) |>
-  arrange(movie_wrangling_2_6) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Movie wrangling 3
-
-The table below provides data about 10 movies released in the United States. It provides data on the movie's title (title), the movie's director (director), the date the movie was released (release_date), the season the movie was released (season), the worldwide gross intake in U.S. dollars (gross), the cleaned version of the worldwide gross intake in U.S. dollars (gross_clean), and whether or not the movie won the Best Picture Oscar (best_picture).
-
-![](images/wrangle.png)
-
-**Question**: You have been tasked with adding a new column called nominated_for_best_picture which indicates whether or not each movie was nominated for the Best Picture Oscar ("Yes" if it was, "No" if it was not). Is there sufficient information in this dataset to generate this new column? Explain.
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_wrang3 <- assessment_clean |>
-  select(movie_wrangling_3_6) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_wrang3` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(movie_wrangling_3_6) |>
-  filter(is.na(movie_wrangling_3_6) != T) |>
-  arrange(movie_wrangling_3_6) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Movie wrangling 4
-
-![](images/wrangle.png)
-
-The table below provides data about 10 movie directors. It provides data on the director's name (director), the number of Oscars the movie's director has been nominated for (nominations), and the number of Oscars the director has won (oscars).
-
-![](images/wrangle2.png)
-
-**Question**: Use the data in the Movies Table and in the Directors Table to answer the following questions. For each question, what is the result of carrying out the given pseudocode (ie. code recipe)?
-
-START_WITH(the Movies table) then
-
-```         
-KEEP_ROWS_WHERE(the season value is Fall) then
-
-COUNT(the number of rows)
-```
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_wrang4 <- assessment_clean |>
-  select(movie_wrangling_4_6) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_wrang4` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(movie_wrangling_4_6) |>
-  filter(is.na(movie_wrangling_4_6) != T) |>
-  arrange(movie_wrangling_4_6) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Movie wrangling 5
-
-![](images/wrangle.png)
-
-The table below provides data about 10 movie directors. It provides data on the director's name (director), the number of Oscars the movie's director has been nominated for (nominations), and the number of Oscars the director has won (oscars).
-
-![](images/wrangle2.png)
-
-**Question**: Use the data in the Movies Table and in the Directors Table to answer the following questions. For each question, what is the result of carrying out the given pseudocode (ie. code recipe)?
-
-START_WITH(the Movies table) then
-
-```         
-KEEP_ROWS_WHERE(the season value is Fall) then 
-
-COUNT(the number of rows) WHERE( best_picture value is Yes)
-```
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_wrang5 <- assessment_clean |>
-  select(movie_wrangling_5_6) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_wrang5` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(movie_wrangling_5_6) |>
-  filter(is.na(movie_wrangling_5_6) != T) |>
-  arrange(movie_wrangling_5_6) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-## Movie wrangling 6
-
-![](images/wrangle.png)
-
-The table below provides data about 10 movie directors. It provides data on the director's name (director), the number of Oscars the movie's director has been nominated for (nominations), and the number of Oscars the director has won (oscars).
-
-![](images/wrangle2.png)
-
-**Question**: Use the data in the Movies Table and in the Directors Table to answer the following questions. For each question, what is the result of carrying out the given pseudocode (ie. code recipe)?
-
-START_WITH(the Movies table) then
-
-```         
-KEEP_ROWS_WHERE(the season value is Fall then 
-
-ADD_COLUMNS_FROM(the Director Table) MATCHING_BY(the director column) then 
-
-COUNT(the number of rows) WHERE(oscars value is 3) AND(best_picture value is No)
-```
-
-::: {.callout-caution collapse="true"}
-## Raw responses
-
-```{r}
-#| echo: false
-na_wrang6 <- assessment_clean |>
-  select(movie_wrangling_6_6) |>
-  summarize_all(~ sum(is.na(.)))
-```
-
-There are `r na_wrang6` missing observations for this question. Complete responses can be seen below.
-
-```{r}
-#| echo: false
-assessment_clean |>
-  select(movie_wrangling_6_6) |>
-  filter(is.na(movie_wrangling_6_6) != T) |>
-  arrange(movie_wrangling_6_6) |>
-  kbl() |>
-  kable_styling()
-```
-:::
-
-# Key 
-
-```{r}
-#| echo: false
-
-key_print <- tibble(
-  question = unique(mc2$question),
-  correct = c( "City a", "Can't be determined from the information given.", "$151,424", "Plot A", "Plot D", "Plot D", "Plot B,Plot D", "Horror", "FALSE", "TRUE", "Need additional information to determine this:", "", "", "", "", "Valid", "Cannot determine from this plot", "Cannot determine from this plot", "County boundaries,Unemployment rate in each county || County boundaries,Number of adults living in each county,Number of unemployed adults living in each county", "None of the above")
-)
-
-color.me.build.key <- which(str_detect(key$question, "build"))
-color.me.key <- which(str_detect(key$question, "disease_screening") |
-                    str_detect(key$question, "data")| 
-                    str_detect(key$question, "1_4")) 
-
-key_print |>
-  kbl() |>
-  kable_styling() |>
-  row_spec(color.me.key, bold = T, color = "black", background = "yellow") |>
-  row_spec(color.me.build.key, bold = T, color = "black" , background = "blue") |>
-  footnote(general = "Questions in blue have more than one answer. Questions in
-           yellow do not have official answers",
-           alphabet = c("movie budgest question may have unintended Plot D answer","disease questions could be answered by all plots if counts / percentages are known ", "team has not come to a concensus on answer (None of the above vs GPA and major)"))
-```
-
 
