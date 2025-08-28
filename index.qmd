@@ -209,7 +209,7 @@ Here are common student words for the question "How much time did you spend on t
 
 library(dplyr)
 library(tidytext) # For unnest_tokens
-library(stringr)  # For string manipulation (optional, often loaded with tidyverse)
+library(stringr)  # For string manipulation
 
 get_most_common_words <- function(data, text_column, n = 10, remove_stopwords = TRUE) {
   # Enforce data to be a tibble

@@ -1,4 +1,10 @@
 ---
+title: "2023 Pilot"
+format: html
+editor: visual
+---
+
+---
 title: "ds assessment report"
 format: html
 editor: visual
@@ -39,11 +45,11 @@ Below is a draft to be updated with the team.
 
 Thematic analysis
 
--   code the different statements to identify similar characteristics among answers
+- code the different statements to identify similar characteristics among answers
 
--   identify patterns among codes to create emergent themes (named groups)
+- identify patterns among codes to create emergent themes (named groups)
 
--   define themes created
+- define themes created 
 
 Suggested to do this independently and compare results to help establish evidence of validity (Consensus coding).
 
@@ -56,47 +62,20 @@ Suggested to do this independently and compare results to help establish evidenc
 
 # data with question information
 assessment <- read_csv("data/anonymized-pilot-4-24.csv") |>
-#assessment <- read_csv("data/anonymized-pilot-2025.csv") |>
   janitor::clean_names() |>
   mutate(
     progress = as.numeric(progress),
     duration_in_seconds = as.numeric(duration_in_seconds),
     finished = as.logical(finished),
-    he_said_she_said_1_3 = as.logical(he_said_she_said_1_3),
-    he_said_she_said_2_3 = as.logical(he_said_she_said_2_3),
-    he_said_she_said_3_3 = as.logical(he_said_she_said_3_3),
+    #he_said_she_said_1_3 = as.logical(he_said_she_said_1_3),
+    #he_said_she_said_2_3 = as.logical(he_said_she_said_2_3),
+    #he_said_she_said_3_3 = as.logical(he_said_she_said_3_3),
     ) |>
   filter(consent == "Yes, I agree to allow my responses to the assessment as research data.",
          progress > 10)
 
-assessment <- assessment |>
-  rename("movie_budgets_1b" = q47,
-         "movie_budgets_1c" = q48, 
-         "shop" = movie_budgets_2,
-         "covid_map_1" = covid_map_1_2,
-         "covid_map_2" = q49, 
-         "covid_map_3" = q50,
-         "covid_map_4" = q51,
-         "att_check" = q53,
-         "covid_map_5" = q52,
-         "he_said_she_said_1" = he_said_she_said_1_3,
-         "he_said_she_said_2" = q54,
-         "he_said_she_said_3" = q55,
-         "build_a_plot_1" = build_a_plot, 
-         "build_a_plot_2" = q61,
-         "blocks_1" = q56,
-         "blocks_2" = q57, 
-         "realty_tree_1" = realty_tree_1_2,
-         "realty_tree_2" = q58, 
-         )
-
-assessment <- assessment |> 
-  select(-c(1:16, ncol(assessment)))
-
-names(assessment)
-
 mc <- assessment |> 
-  dplyr::select(storm_paths, contains("realty"), contains("movie_budget"), he_said_she_said_1_3, contains("screening"), contains("website"), contains("build"), contains("confidentiali"))
+  dplyr::select(storm_paths, contains("realty"), contains("movie_budget"), he_said_she_said_1_3, he_said_she_said_2_3, he_said_she_said_3_3, contains("screening"), contains("website"), contains("build"), contains("confidentiali"))
 ```
 
 There are `r nrow(assessment) - 2` participants that opted into our study. Of the `r nrow(assessment) - 2` participants, `r sum(assessment$finished, na.rm = T)` made it to the last question of the survey.
@@ -162,7 +141,6 @@ Below is a table that shares the percentage of correct responses across `r nrow(
 
 mc2 <- mc |>
   mutate(id = 1:n()) |>
-  mutate(he_said_she_said_1_3 = as.character(he_said_she_said_1_3)) |>
   pivot_longer(1:ncol(mc), names_to = "question", values_to = "answer")
 
 key <- tibble(
@@ -457,7 +435,7 @@ s10 |>
   
 ```
 
-## Movie budgets 2
+## Movie bugets 2
 
 **Question**: For each genre, the data scientist also fitted a regression line to model the relationship between movies' budgets and their revenues. A scatterplot of this relationship, along with the fitted regression line, is shown for each of the four genres below. For which genre would the fitted regression model produce the highest $R^2$ value?
 
@@ -1492,7 +1470,7 @@ assessment_clean |>
 ```
 :::
 
-# Key
+# Key 
 
 ```{r}
 #| echo: false
